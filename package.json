@@ -21,6 +21,10 @@
     "@ng-bootstrap/ng-bootstrap": "^17.0.1",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.2",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "ngx-dabd-grupo01": "^3.4.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"
