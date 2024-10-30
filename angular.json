@@ -3,11 +3,32 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "template-app": {
+    "users-cadaster-addresses-TPI": {
       "projectType": "application",
       "schematics": {
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
         "@schematics/angular:component": {
-          "style": "scss"
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
         }
       },
       "root": "",
@@ -17,7 +38,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/template-app",
+            "outputPath": "dist/users-cadaster-addresses-tpi",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -25,12 +46,12 @@
               "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
               "src/styles.scss"
@@ -65,10 +86,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "template-app:build:production"
+              "buildTarget": "users-cadaster-addresses-TPI:build:production"
             },
             "development": {
-              "buildTarget": "template-app:build:development"
+              "buildTarget": "users-cadaster-addresses-TPI:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -85,12 +106,12 @@
               "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
               "src/styles.scss"
@@ -100,5 +121,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

@@ -5,12 +5,15 @@ import { SessionService } from './services/session.service';
 import {AsyncPipe, CommonModule} from '@angular/common';
 import {SidebarComponent} from "./components/common/sidebar/sidebar.component";
 import {NavbarComponent} from "./components/common/navbar/navbar.component";
+import {HttpClientModule} from "@angular/common/http";
 import {LoginComponent} from "./components/repositories/users/login/login.component";
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToastsContainer, SidebarComponent, NavbarComponent, RouterOutlet, LoginComponent, AsyncPipe],
+  imports: [RouterOutlet, ToastsContainer, SidebarComponent, NavbarComponent,
+    RouterOutlet, AsyncPipe, CommonModule, RouterLink, LoginComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

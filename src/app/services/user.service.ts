@@ -4,7 +4,6 @@ import { User } from '../models/user';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { PaginatedResponse } from '../models/api-response';
-import { UserMapperPipe } from '../pipes/user-mapper.pipe';
 import {toCamelCase} from "../utils/object-helper";
 
 @Injectable({
