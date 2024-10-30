@@ -1,13 +1,13 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { Plot, PlotStatusDictionary, PlotTypeDictionary } from '../../../models/plot';
-import { OwnerPlotService } from '../../../services/owner-plot.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OwnerService } from '../../../services/owner.service';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MainContainerComponent } from 'ngx-dabd-grupo01';
 import { CadastrePlotOwnerFilterButtonsComponent } from '../cadastre-plot-owner-filter-buttons/cadastre-plot-owner-filter-buttons.component';
+import {OwnerPlotService} from "../../../../../services/owner-plot.service";
+import {OwnerService} from "../../../../../services/owner.service";
+import {Plot, PlotStatusDictionary, PlotTypeDictionary} from "../../../../../models/plot";
 
 @Component({
   selector: 'app-cadastre-plot-owner-list',
@@ -39,7 +39,7 @@ export class CadastrePlotOwnerListComponent {
   plotId : number | undefined = undefined
 
   retrievePlotsByActive: boolean | undefined = true;
-  
+
   plotTypeDictionary = PlotTypeDictionary;
   plotStatusDictionary = PlotStatusDictionary;
   plotDictionaries = [this.plotTypeDictionary, this.plotStatusDictionary]
@@ -123,9 +123,9 @@ export class CadastrePlotOwnerListComponent {
     --this.currentPage
     this.getPlotsByOwner();
   }
-    
+
   onPageChange(page: number) {
-    this.currentPage = --page; 
+    this.currentPage = --page;
     this.getPlotsByOwner();
   }
 

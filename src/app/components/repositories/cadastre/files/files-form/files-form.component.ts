@@ -7,16 +7,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoadFileService } from '../../../services/load-file.service';
-import { OwnerService } from '../../../services/owner.service';
-import { OwnerPlotService } from '../../../services/owner-plot.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Plot } from '../../../models/plot';
-import { PlotService } from '../../../services/plot.service';
-import { BatchFileType, FileUploadData } from '../../../models/file';
-import { plotForOwnerValidator } from '../../../validators/cadastre-plot-for-owner';
 import { ToastService } from 'ngx-dabd-grupo01';
-import { Owner } from '../../../models/owner';
+import {OwnerService} from "../../../../../services/owner.service";
+import {OwnerPlotService} from "../../../../../services/owner-plot.service";
+import {LoadFileService} from "../../../../../services/load-file.service";
+import {PlotService} from "../../../../../services/plot.service";
+import {Plot} from "../../../../../models/plot";
+import {Owner} from "../../../../../models/owner";
+import {plotForOwnerValidator} from "../../../../../validators/cadastre-plot-for-owner";
+import {BatchFileType, FileUploadData} from "../../../../../models/file";
 
 interface FileData {
   fileType: BatchFileType;
@@ -124,7 +124,7 @@ export class FilesFormComponent implements OnInit {
       this.selectedFiles = [...this.selectedFiles].concat(Array.from(target.files));
     }
   }
-    
+
 
   /**
    * Upload the selected file to the server using the FileUploadService.
@@ -178,7 +178,7 @@ export class FilesFormComponent implements OnInit {
         fileType: control.value.fileType,
         name: control.value.name,
       };
-      
+
       formData.files.push(fileData);
     });
     return formData;

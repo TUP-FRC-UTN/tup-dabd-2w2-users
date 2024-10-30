@@ -33,22 +33,42 @@ import {
 import {
   UsersRolesListComponent
 } from "./components/repositories/users/roles/users-roles-list/users-roles-list.component";
+import {
+  CadastreOwnerFormComponent
+} from "./components/repositories/cadastre/owners/cadastre-owner-form/cadastre-owner-form.component";
+import {
+  CadastreOwnerDetailComponent
+} from "./components/repositories/cadastre/owners/cadastre-owner-detail/cadastre-owner-detail.component";
+import {
+  CadastreOwnerListComponent
+} from "./components/repositories/cadastre/owners/cadastre-owner-list/cadastre-owner-list.component";
+import {FilesFormComponent} from "./components/repositories/cadastre/files/files-form/files-form.component";
+import {
+  OwnerFilesViewComponent
+} from "./components/repositories/cadastre/files/owner-files-view/owner-files-view.component";
+import {FilesViewComponent} from "./components/repositories/cadastre/files/files-view/files-view.component";
+import {
+  CadastreOwnerPlotListComponent
+} from "./components/repositories/cadastre/owners-X-plots/cadastre-owner-plot-list/cadastre-owner-plot-list.component";
+import {
+  CadastrePlotOwnerListComponent
+} from "./components/repositories/cadastre/owners-X-plots/cadastre-plot-owner-list/cadastre-plot-owner-list.component";
 
 export const routes: Routes = [
   //{ path: 'login', component: LoginComponent },
   //{ path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, /* canActivate: [authGuard] */ },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  // { path: 'owner/form', component: CadastreOwnerFormComponent, /* canActivate: [authGuard] */ },
-  // { path: 'owner/form/:id', component: CadastreOwnerFormComponent, /* canActivate: [authGuard] */ },
-  // { path: 'owner/detail/:id', component: CadastreOwnerDetailComponent, /* canActivate: [authGuard] */ },
-  // { path: 'owner/list', component: CadastreOwnerListComponent, /* canActivate: [authGuard] */ },
+  { path: 'owner/form', component: CadastreOwnerFormComponent, /* canActivate: [authGuard] */ },
+  { path: 'owner/form/:id', component: CadastreOwnerFormComponent, /* canActivate: [authGuard] */ },
+  { path: 'owner/detail/:id', component: CadastreOwnerDetailComponent, /* canActivate: [authGuard] */ },
+  { path: 'owner/list', component: CadastreOwnerListComponent, /* canActivate: [authGuard] */ },
   { path: 'plot/form', component: CadastrePlotFormComponent, /* canActivate: [authGuard] */ },
   { path: 'plot/form/:id', component: CadastrePlotFormComponent, /* canActivate: [authGuard] */ },
   { path: 'plot/list', component: CadastrePlotListComponent, /* canActivate: [authGuard] */ },
-  // { path: 'files/form', component: FilesFormComponent, /* canActivate: [authGuard] */ },
-  // { path: 'files/view', component: FilesViewComponent, /* canActivate: [authGuard] */ },
-  // { path: 'files/:ownerId/view', component: OwnerFilesViewComponent, /* canActivate: [authGuard] */ },
+  { path: 'files/form', component: FilesFormComponent, /* canActivate: [authGuard] */ },
+  { path: 'files/view', component: FilesViewComponent, /* canActivate: [authGuard] */ },
+  { path: 'files/:ownerId/view', component: OwnerFilesViewComponent, /* canActivate: [authGuard] */ },
   { path: 'user/list', component: UserUserListComponent, /* canActivate: [authGuard] */ },
   // { path: 'user/form', component: UserFormComponent, /* canActivate: [authGuard] */ },
   { path: 'user/form', component: UserUserFormComponent, /* canActivate: [authGuard] */ },
@@ -59,8 +79,8 @@ export const routes: Routes = [
   { path: 'roles/form', component: UsersRolesFormComponent, /* canActivate: [authGuard] */},
   { path: 'roles/form/:roleId', component: UsersRolesFormComponent, /* canActivate: [authGuard] */},
   { path: 'roles/detail/:roleId', component: UsersRolesDetailComponent, /* canActivate: [authGuard] */},
-  // { path: 'owners/plot/:plotId', component: CadastreOwnerPlotListComponent, /* canActivate: [authGuard] */ },
-  // { path: 'plots/owner/:ownerId', component: CadastrePlotOwnerListComponent, /* canActivate: [authGuard] */ },
+  { path: 'owners/plot/:plotId', component: CadastreOwnerPlotListComponent, /* canActivate: [authGuard] */ },
+  { path: 'plots/owner/:ownerId', component: CadastrePlotOwnerListComponent, /* canActivate: [authGuard] */ },
   { path: 'plot/detail/:id', component: CadastrePlotDetailComponent, /* canActivate: [authGuard] */ },
   { path: 'account/concept/:accountId', component: AccountAccountConceptComponent, /* canActivate: [authGuard] */ },
   { path: 'account/list', component: AccountAccountListComponent, /* canActivate: [authGuard] */ },

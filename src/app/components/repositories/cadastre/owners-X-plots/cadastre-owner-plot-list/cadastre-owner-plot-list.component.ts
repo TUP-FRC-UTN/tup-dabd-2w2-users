@@ -1,15 +1,14 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { Owner } from '../../../models/owner';
-import { OwnerPlotService } from '../../../services/owner-plot.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PlotService } from '../../../services/plot.service';
-import { OwnerPlotHistoryDTO } from '../../../models/ownerXplot';
 import { Location } from '@angular/common';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { MainContainerComponent } from 'ngx-dabd-grupo01';
-import { CadastreOwnerPlotFilterButtonsComponent } from '../cadastre-owner-plot-filter-buttons/cadastre-owner-plot-filter-buttons.component'
-import { DocumentTypeDictionary, OwnerTypeDictionary} from '../../../models/owner';
+import { CadastreOwnerPlotFilterButtonsComponent } from '../cadastre-owner-plot-filter-buttons/cadastre-owner-plot-filter-buttons.component';
+import {OwnerPlotService} from "../../../../../services/owner-plot.service";
+import {PlotService} from "../../../../../services/plot.service";
+import {OwnerPlotHistoryDTO} from "../../../../../models/ownerXplot";
+import {DocumentTypeDictionary, OwnerTypeDictionary} from "../../../../../models/owner";
 
 @Component({
   selector: 'app-cadastre-owner-plot-list',
@@ -80,20 +79,20 @@ export class CadastreOwnerPlotListComponent {
   }
 
   formatDate(date: Date | undefined): string {
-    if (!date) return ''; 
-  
+    if (!date) return '';
+
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false, 
+      hour12: false,
     };
-    
+
     return new Intl.DateTimeFormat('es-AR', options)
       .format(date)
-      .replace(',', ''); 
+      .replace(',', '');
   }
 
   onItemsPerPageChange() {
@@ -102,7 +101,7 @@ export class CadastreOwnerPlotListComponent {
   }
 
   onPageChange(page: number) {
-    this.currentPage = --page; 
+    this.currentPage = --page;
     this.getOwnersByPlot();
   }
 

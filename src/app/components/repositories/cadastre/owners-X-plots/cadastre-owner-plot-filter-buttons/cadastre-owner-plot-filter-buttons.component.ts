@@ -1,8 +1,8 @@
 import { Component, inject, Input } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CadastreExcelService } from '../../../services/cadastre-excel.service';
 import { Router } from '@angular/router';
-import { OwnerPlotService } from '../../../services/owner-plot.service';
+import {OwnerPlotService} from "../../../../../services/owner-plot.service";
+import {CadastreExcelService} from "../../../../../services/cadastre-excel.service";
 
 @Component({
   selector: 'app-cadastre-owner-plot-filter-buttons',

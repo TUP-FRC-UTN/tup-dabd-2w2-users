@@ -1,14 +1,14 @@
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
-import { OwnerService } from '../../../services/owner.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 import { ConfirmAlertComponent, ToastService, MainContainerComponent, FormFieldsComponent, FormConfig } from 'ngx-dabd-grupo01';
-import { Document, FileStatusDictionary, FileTypeDictionary } from '../../../models/file';
-import { Owner } from '../../../models/owner';
-import { FileService } from '../../../services/file.service';
 import { combineLatest } from 'rxjs';
+import {FileService} from "../../../../../services/file.service";
+import {FileStatusDictionary, FileTypeDictionary} from "../../../../../models/file";
+import {Owner} from "../../../../../models/owner";
+import {OwnerService} from "../../../../../services/owner.service";
 
 
 @Component({
@@ -43,7 +43,7 @@ export class OwnerFilesViewComponent {
   fileTypeDictionary = FileTypeDictionary;
   fileStatusDictionary = FileStatusDictionary;
 
-  
+
 
 
   protected ownerService = inject(OwnerService);
@@ -98,7 +98,7 @@ export class OwnerFilesViewComponent {
       },
     }); */
   }
-  
+
 
   // metodo para abrir el archivo en otra ventana
   openFile(url: string): void {
@@ -132,7 +132,7 @@ export class OwnerFilesViewComponent {
         console.log("HOLA")
         this.noteForm.markAllAsTouched();
       }
-      
+
     };
   }
 
@@ -178,9 +178,9 @@ export class OwnerFilesViewComponent {
       this.getOwnerAndFilesById(this.id);
     }
   }
-  
 
-  
+
+
   goBack() {
     this.location.back()
   }

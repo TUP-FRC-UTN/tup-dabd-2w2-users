@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { ValidateOwner } from '../../../models/ownerXplot';
-import { DocumentTypeDictionary, Owner, OwnerStatusDictionary, OwnerTypeDictionary, StateKYC } from '../../../models/owner';
-import { OwnerService } from '../../../services/owner.service';
-import { mapKycStatus } from '../../../utils/owner-helper';
 import { CadastrePlotFilterButtonsComponent } from '../../plots/cadastre-plot-filter-buttons/cadastre-plot-filter-buttons.component';
 import { FormsModule } from '@angular/forms';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { MainContainerComponent } from 'ngx-dabd-grupo01';
 import { Router } from '@angular/router';
+import {ValidateOwner} from "../../../../../models/ownerXplot";
+import {DocumentTypeDictionary, Owner, OwnerStatusDictionary, OwnerTypeDictionary} from "../../../../../models/owner";
+import {OwnerService} from "../../../../../services/owner.service";
+import {mapKycStatus} from "../../../../../utils/object-helper";
 
 @Component({
   selector: 'app-files-view',
@@ -44,7 +44,7 @@ export class FilesViewComponent {
   ngOnInit() {
     this.getAllOwners();
   }
-  
+
   mapKYCStatus(type: string){
     return mapKycStatus(type);
   }
@@ -100,7 +100,7 @@ export class FilesViewComponent {
   approbeOwnerFiles(id: number | undefined) {
     console.log("aprobar archivos del propietario ", id);
   }
-  
+
   // metodo para rechazar el estado completo del owner
   rejectOwnerFiles(id: number | undefined) {
     console.log("rechazar archivos del propietario ", id);
@@ -121,7 +121,7 @@ export class FilesViewComponent {
     this.currentPage = page;
     this.getAllOwners();
   }
-  
+
   toggleView(type: string){}
   applyFilter(type: string){}
   clearFilters(){}

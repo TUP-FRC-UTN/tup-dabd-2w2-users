@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { Owner, OwnerResponse } from '../models/owner';
 import { PaginatedResponse } from '../models/api-response';
-import { toSnakeCase } from '../utils/owner-helper';
 import { OwnerMapperPipe } from '../pipes/owner-mapper.pipe';
 import { Document } from '../models/file';
+import {toSnakeCase} from "../utils/object-helper";
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +65,7 @@ export class OwnerService {
     const headers = new HttpHeaders({
       'x-user-id': userId,
     });
-    
+
     return this.http.post<Owner>(`http://localhost:8282/owner/${ownerId}/plot/${plotId}`, undefined, { headers });
   }
 
@@ -80,7 +80,7 @@ export class OwnerService {
 
     const owner = toSnakeCase(ownerData);
     console.log("Service", owner);
-    
+
     return this.http.put<Owner>(`${this.apiUrl}/${ownerId}`, owner, {
       headers,
     });
@@ -114,7 +114,7 @@ export class OwnerService {
     if (typeof isActive === 'boolean' && !isActive) {
       params = params.append('is_active', isActive.toString());
     }
-    
+
     return this.http
       .get<PaginatedResponse<Owner>>(this.apiUrl + '/doctype', { params })
       .pipe(
@@ -139,7 +139,7 @@ export class OwnerService {
 
     return this.http.get<any>(this.apiUrl + `/${ownerId}/files`).pipe(
       map((response: any) => {
-        
+
         const transformPipe = new OwnerMapperPipe();
         return response.map((file: any) =>
           transformPipe.transformFile(file)

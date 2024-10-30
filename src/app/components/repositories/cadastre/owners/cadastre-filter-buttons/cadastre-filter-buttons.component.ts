@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { Owner } from '../../../models/owner';
 import { Subject } from 'rxjs';
-import { CadastreExcelService } from '../../../services/cadastre-excel.service';
-import { PlotTypeDictionary, PlotStatusDictionary } from '../../../models/plot';
-import { OwnerService } from '../../../services/owner.service';
 import { Router } from '@angular/router';
+import {Owner} from "../../../../../models/owner";
+import {CadastreExcelService} from "../../../../../services/cadastre-excel.service";
+import {OwnerService} from "../../../../../services/owner.service";
 
 @Component({
   selector: 'app-cadastre-filter-buttons',
@@ -18,7 +17,7 @@ export class CadastreFilterButtonsComponent implements OnInit{
 
 
   private router = inject(Router);
-  
+
    // Inject the Excel service for export functionality
    private excelService = inject(CadastreExcelService);
 
@@ -28,10 +27,10 @@ export class CadastreFilterButtonsComponent implements OnInit{
 
   // Input to receive the HTML table from the parent
   @Input() tableName!: HTMLTableElement;
-  
+
   // Input to receive the list of owners from the parent component
   @Input() ownersList!: Owner[];
-  
+
   // Input to redirect to the form.
   @Input() formPath: string = "";
   // Represent the name of the object for the exports.
@@ -46,9 +45,9 @@ export class CadastreFilterButtonsComponent implements OnInit{
   // Observable that emits filtered owner list
   filter$ = this.filterSubject.asObservable();
 
- 
+
   ngOnInit(): void {
-    
+
   }
 
   // Se va a usar para los nombres de los archivos.
@@ -80,7 +79,7 @@ export class CadastreFilterButtonsComponent implements OnInit{
    * Filters the list of owners based on the input value in the text box.
    * The filter checks if any property of the owner contains the search string (case-insensitive).
    * The filtered list is then emitted through the `filterSubject`.
-   * 
+   *
    * @param event - The input event from the text box.
    */
   onFilterTextBoxChanged(event: Event) {
@@ -100,13 +99,13 @@ export class CadastreFilterButtonsComponent implements OnInit{
         return propString.includes(filterValue) || translations.some(trans => trans?.toLowerCase().includes(filterValue));
       });
     });
-    
+
     this.filterSubject.next(filteredList);
   }
 
   /**
    * Translates a value using the provided dictionary.
-   * 
+   *
    * @param value - The value to translate.
    * @param dictionary - The dictionary used for translation.
    * @returns The key that matches the value in the dictionary, or undefined if no match is found.
