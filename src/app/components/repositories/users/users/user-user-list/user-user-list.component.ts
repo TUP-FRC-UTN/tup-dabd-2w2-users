@@ -1,16 +1,16 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { UserService } from '../../../services/user.service';
-import { User } from '../../../models/user';
-import { NgbModal, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmAlertComponent, ToastService, MainContainerComponent } from 'ngx-dabd-grupo01';
-import { Router } from '@angular/router';
-import { UserFilterButtonsComponent } from '../user-filter-buttons/user-filter-buttons.component';
-import { FormsModule } from '@angular/forms';
+import {Component, ElementRef, inject, ViewChild} from '@angular/core';
+import {NgbModal, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
+import {ConfirmAlertComponent, MainContainerComponent, ToastService} from 'ngx-dabd-grupo01';
+import {Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {UserService} from "../../../../../services/user.service";
+import {UsersUserFilterButtonsComponent} from "../users-user-filter-buttons/users-user-filter-buttons.component";
+import {User} from "../../../../../models/user";
 
 @Component({
   selector: 'app-user-user-list',
   standalone: true,
-  imports: [UserFilterButtonsComponent, MainContainerComponent, NgbPagination, FormsModule],
+  imports: [UsersUserFilterButtonsComponent, MainContainerComponent, NgbPagination, FormsModule],
   templateUrl: './user-user-list.component.html',
   styleUrl: './user-user-list.component.css'
 })
@@ -48,7 +48,7 @@ export class UserUserListComponent {
       });
     }
 
-    @ViewChild('filterComponent') filterComponent!: UserFilterButtonsComponent<User>;
+    @ViewChild('filterComponent') filterComponent!: UsersUserFilterButtonsComponent<User>;
     @ViewChild('usersTable', { static: true }) tableName!: ElementRef<HTMLTableElement>;
     //#endregion
 
@@ -84,7 +84,7 @@ export class UserUserListComponent {
 
       modalRef.result.then((result) => {
         if (result && user.id) {
-        
+
         this.userService.deleteUser(user.id, 1).subscribe(
           response => {
             this.toastService.sendSuccess('Usuario eliminado correctamente.')
@@ -122,7 +122,7 @@ export class UserUserListComponent {
       this.currentPage = 1;
       this.getAllUsers();
     }
-  
+
     onPageChange(page: number) {
       this.currentPage = page;
       this.getAllUsers();

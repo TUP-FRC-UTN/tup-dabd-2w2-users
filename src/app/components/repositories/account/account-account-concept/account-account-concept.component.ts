@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { AccountService } from '../../../services/account.service';
-import { Router } from '@angular/router';
-import { AccountingConcept, ConceptTypes } from '../../../models/account';
-import { CommonModule, Location } from '@angular/common';
-import { MainContainerComponent } from 'ngx-dabd-grupo01';
+import {Component, inject} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule, Location} from '@angular/common';
+import {MainContainerComponent} from 'ngx-dabd-grupo01';
+import {AccountService} from "../../../../services/account.service";
+import {AccountingConcept, ConceptTypes} from "../../../../models/account";
 
 @Component({
   selector: 'app-account-account-concept',

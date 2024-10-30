@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { Location } from '@angular/common';
-import { PlotService } from '../../../services/plot.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Plot, PlotStatusDictionary, PlotTypeDictionary } from '../../../models/plot';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MainContainerComponent } from 'ngx-dabd-grupo01';
+import {Component, inject} from '@angular/core';
+import {Location} from '@angular/common';
+import {ActivatedRoute} from '@angular/router';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {MainContainerComponent} from 'ngx-dabd-grupo01';
+import {PlotStatusDictionary, PlotTypeDictionary} from "../../../../../models/plot";
+import {PlotService} from "../../../../../services/plot.service";
 
 @Component({
   selector: 'app-cadastre-plot-detail',

@@ -1,19 +1,19 @@
-import { Component, inject } from '@angular/core';
-import { UserService } from '../../../services/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MainContainerComponent, ToastService } from 'ngx-dabd-grupo01';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { emailValidator } from '../../../validators/email-unique-validator';
-import { Address, Contact } from '../../../models/owner';
-import { RoleService } from '../../../services/role.service';
-import { Role } from '../../../models/role';
-import { toSnakeCase } from '../../../utils/owner-helper';
-import { plotForOwnerValidator } from '../../../validators/cadastre-plot-for-owner';
-import { PlotService } from '../../../services/plot.service';
-import { Plot } from '../../../models/plot';
-import { Country, Provinces } from '../../../models/generics';
-import { User } from '../../../models/user';
-import { NgClass } from '@angular/common';
+import {Component, inject} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MainContainerComponent, ToastService} from 'ngx-dabd-grupo01';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {UserService} from "../../../../../services/user.service";
+import {RoleService} from "../../../../../services/role.service";
+import {PlotService} from "../../../../../services/plot.service";
+import {Address, Contact} from "../../../../../models/owner";
+import {Role} from "../../../../../models/role";
+import {Plot} from "../../../../../models/plot";
+import {plotForOwnerValidator} from "../../../../../validators/cadastre-plot-for-owner";
+import {Country, Provinces} from "../../../../../models/generics";
+import {emailValidator} from "../../../../../validators/email-unique-validator";
+import {User} from "../../../../../models/user";
+import {toSnakeCase} from "../../../../../utils/object-helper";
 
 @Component({
   selector: 'app-user-user-form',
@@ -76,7 +76,7 @@ export class UserUserFormComponent {
         country: new FormControl('', [Validators.required]),
         postalCode: new FormControl('', [Validators.required]),
       }),
-      
+
       plotForm: new FormGroup({
         plotNumber: new FormControl(
           '',
@@ -126,7 +126,7 @@ export class UserUserFormComponent {
         display: value
       }));
     }
-    
+
     //#endregion
 
     //#region SETEAR VALORES AL FORM
@@ -136,28 +136,28 @@ export class UserUserFormComponent {
           response => {
             console.log(response)
             this.user = response;
-    
+
             this.userForm.patchValue({
               email: this.user.email,
               firstName: this.user.firstName,
               lastName: this.user.lastName,
               userName: this.user.userName,
             });
-    
+
             if (this.user.addresses) {
               this.addresses = [...this.user.addresses];
               if (this.addresses.length > 0) {
                 this.setAddressValue(0);
               }
             }
-    
+
             if (this.user.contacts) {
               this.contacts = [...this.user.contacts];
               if (this.contacts.length > 0) {
                 this.setContactValue(0);
               }
             }
-    
+
             if (this.user.roles) {
               this.roles = [...this.user.roles];
               this.userForm.get('rolesForm.rol')?.setValue(this.roles[0]?.id || null);
@@ -183,16 +183,16 @@ export class UserUserFormComponent {
       console.log(contact)
       if (contact) {
           const contactFormGroup = this.userForm.get('contactsForm') as FormGroup;
-        
+
           contactFormGroup.patchValue({
             contactType: contact.contactType,
             contactValue: contact.contactValue,
           })
-          
+
           this.contactIndex = index;
       }
     }
-  
+
     getContactsValues(): Contact {
       const contactFormGroup = this.userForm.get('contactsForm') as FormGroup;
       return {
@@ -225,7 +225,7 @@ export class UserUserFormComponent {
       this.contacts.splice(index, 1);
     }
     //#endregion
-  
+
     //#region FUNCION ROLES
     getRolValue() {
       const rolFormGroup = this.userForm.get('rolesForm') as FormGroup;
@@ -245,7 +245,7 @@ export class UserUserFormComponent {
         this.toastService.sendError("Rol no valido.")
       }
     }
-  
+
     removeRol(index: number): void {
       this.roles.splice(index, 1);
     }
@@ -260,7 +260,7 @@ export class UserUserFormComponent {
       return user.roles?.map(role => role.id);
     }
 
-    
+
     //#endregion
 
     //#region CREATE / UPDATE
@@ -294,7 +294,7 @@ export class UserUserFormComponent {
         },
       });
     }
-  
+
     updateUser() {
       this.fillUser();
       if (this.user.id) {

@@ -1,5 +1,5 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
 interface Notification {
   id: number;

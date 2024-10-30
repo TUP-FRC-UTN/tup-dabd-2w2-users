@@ -1,10 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
-import { Account } from '../../../models/account';
-import { AccountService } from '../../../services/account.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { PlotService } from '../../../services/plot.service';
-import { MainContainerComponent } from 'ngx-dabd-grupo01';
+import {Component, inject} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {MainContainerComponent} from 'ngx-dabd-grupo01';
+import {AccountService} from "../../../../services/account.service";
+import {PlotService} from "../../../../services/plot.service";
+import {Account} from "../../../../models/account";
 
 @Component({
   selector: 'app-account-account-list',

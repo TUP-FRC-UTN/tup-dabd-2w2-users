@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { NotificationsComponent } from '../../notifications/notifications.component';
-import { ToastService, ConfirmAlertComponent } from 'ngx-dabd-grupo01';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LoginService } from '../../../services/login.service';
+import {Component, inject} from '@angular/core';
+import {Router, RouterLink} from '@angular/router';
+import {NotificationsComponent} from '../../notifications/notifications.component';
+import {ConfirmAlertComponent, ToastService} from 'ngx-dabd-grupo01';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LoginService} from '../../../services/login.service';
 
 @Component({
   selector: 'app-navbar',

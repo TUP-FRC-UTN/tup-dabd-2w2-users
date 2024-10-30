@@ -1,45 +1,45 @@
 <app-main-container title="Lista de Usuarios">
     <!-- ESTE COMPONENTE LO VAN A TENER QUE MODIFICAR ES EL DEL BUSCAR, EXPORTAR, ETC -->
-     <!-- @param itemList => Mandan la lista con la cual hacen la tabla 
-          @param tableName => Mandan el nombre de la tabla el que definen con # 
-          @param tableName => Mandan el nombre de la tabla el que definen con # 
-          @param formPath => Van a poner la ruta de su formulario para crear uno nuevo 
+     <!-- @param itemList => Mandan la lista con la cual hacen la tabla
+          @param tableName => Mandan el nombre de la tabla el que definen con #
+          @param tableName => Mandan el nombre de la tabla el que definen con #
+          @param formPath => Van a poner la ruta de su formulario para crear uno nuevo
           @param dictionaries => En caso de usar diccionarios mandenlos, si no los mandan no pasa nada
-          @param objectName => Hace referencia al nombre de su objeto para guardar el archivo pdf o excel. Ej: 25/10/2024_LOTES 
+          @param objectName => Hace referencia al nombre de su objeto para guardar el archivo pdf o excel. Ej: 25/10/2024_LOTES
           -->
-    <app-user-filter-buttons
+    <app-users-user-filter-buttons
     #filterComponent
-    [itemsList]="usersList" 
+    [itemsList]="usersList"
     [tableName]="tableName.nativeElement"
     formPath="/user/form"
-    objectName="LOTES"></app-user-filter-buttons>
+    objectName="LOTES"></app-users-user-filter-buttons>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div class="btn-group me-5" role="group">
       </div>
       <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" class="btn-check" 
-        name="btnradio" id="btnradio1" 
+        <input type="radio" class="btn-check"
+        name="btnradio" id="btnradio1"
         autocomplete="off" (change)="changeActiveFilter(true)" checked>
         <label class="btn btn-outline-primary" for="btnradio1">Usuarios Activos</label>
-    
-        <input type="radio" class="btn-check" 
-        name="btnradio" id="btnradio2" 
+
+        <input type="radio" class="btn-check"
+        name="btnradio" id="btnradio2"
         autocomplete="off" (change)="changeActiveFilter(false)">
         <label class="btn btn-outline-primary" for="btnradio2">Usuarios Inactivos</label>
-    
-        <input type="radio" class="btn-check" 
-        name="btnradio" id="btnradio3" 
+
+        <input type="radio" class="btn-check"
+        name="btnradio" id="btnradio3"
         autocomplete="off" (change)="changeActiveFilter()">
         <label class="btn btn-outline-primary" for="btnradio3">Todos</label>
       </div>
     </div>
-    
+
     <div class="table-container">
       <table class="table table-striped fixed-table" style="border: 1px solid rgba(0, 0, 0, 0.150); border-collapse: collapse;" #usersTable>
         @if (filteredUsersList.length === 0) {
           <thead>
-            <td colspan="7"> 
+            <td colspan="7">
               <div class="text-center p-2">
                 <div class="alert alert-secondary text-center" role="alert">
                   No hay elementos para mostrar
@@ -61,7 +61,7 @@
         </thead>
         <tbody>
             @for (user of (filteredUsersList.length ? filteredUsersList : usersList); track user) {
-    
+
             <tr>
               <td>
                 {{ user.firstName + " " + user.lastName }}
@@ -102,13 +102,13 @@
                 </div>
               </td>
           </tr>
-    
+
             }
         </tbody>
           }
         </table>
     </div>
-      
+
       <div class="d-flex justify-content-between align-items-center mt-3">
 
         <div class="form-group mb-3 me-2">
@@ -123,21 +123,21 @@
           }
           </select>
         </div>
-        
-        <div class="ms-auto"> 
+
+        <div class="ms-auto">
         </div>
         <ngb-pagination
-        [(page)]="currentPage"                   
-        [pageSize]="pageSize"                    
-        [collectionSize]="totalItems"            
-        (pageChange)="onPageChange($event)"      
-        [maxSize]="5"                            
-        [boundaryLinks]="false"                   
+        [(page)]="currentPage"
+        [pageSize]="pageSize"
+        [collectionSize]="totalItems"
+        (pageChange)="onPageChange($event)"
+        [maxSize]="5"
+        [boundaryLinks]="false"
         ></ngb-pagination>
-          
+
         <button class="btn btn-secondary ms-3 mb-3" (click)="showInfo()">
           <i class="bi bi-info-circle"></i>
         </button>
-  
+
     </div>
 </app-main-container>

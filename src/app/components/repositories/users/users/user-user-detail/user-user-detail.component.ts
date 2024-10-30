@@ -1,8 +1,8 @@
-import { Location } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../../services/user.service';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {Location} from '@angular/common';
+import {Component, inject} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {UserService} from "../../../../../services/user.service";
 
 @Component({
   selector: 'app-user-user-detail',
@@ -34,7 +34,7 @@ export class UserUserDetailComponent {
       this.setValues(this.activatedRoute.snapshot.paramMap.get('id'));
     }
 
-    
+
     //#region SETEO DE VALORES AL FORM
     setValues(userId : string | null) {
       if(userId) {

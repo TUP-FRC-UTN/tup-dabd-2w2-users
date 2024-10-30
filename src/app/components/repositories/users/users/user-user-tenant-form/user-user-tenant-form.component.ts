@@ -1,20 +1,19 @@
-import { Component, inject } from '@angular/core';
-import { UserService } from '../../../services/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MainContainerComponent, ToastService } from 'ngx-dabd-grupo01';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { emailValidator } from '../../../validators/email-unique-validator';
-import { Address, Contact } from '../../../models/owner';
-import { RoleService } from '../../../services/role.service';
-import { Role } from '../../../models/role';
-import { toSnakeCase } from '../../../utils/owner-helper';
-import { plotForOwnerValidator } from '../../../validators/cadastre-plot-for-owner';
-import { PlotService } from '../../../services/plot.service';
-import { Plot } from '../../../models/plot';
-import { Country, Provinces } from '../../../models/generics';
-import { User } from '../../../models/user';
-import { NgClass } from '@angular/common';
-import {OwnerPlotService} from "../../../services/owner-plot.service";
+import {Component, inject} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MainContainerComponent, ToastService} from 'ngx-dabd-grupo01';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {PlotService} from "../../../../../services/plot.service";
+import {RoleService} from "../../../../../services/role.service";
+import {UserService} from "../../../../../services/user.service";
+import {OwnerPlotService} from "../../../../../services/owner-plot.service";
+import {NgClass} from "@angular/common";
+import {Address, Contact} from "../../../../../models/owner";
+import {Role} from "../../../../../models/role";
+import {Plot} from "../../../../../models/plot";
+import {Country, Provinces} from "../../../../../models/generics";
+import {emailValidator} from "../../../../../validators/email-unique-validator";
+import {User} from "../../../../../models/user";
+import {toSnakeCase} from "../../../../../utils/object-helper";
 
 
 @Component({

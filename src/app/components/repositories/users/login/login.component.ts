@@ -1,15 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {
-  ReactiveFormsModule,
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormsModule,
-} from '@angular/forms';
-import { catchError, of, switchMap } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { MainContainerComponent, ToastService } from 'ngx-dabd-grupo01';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {catchError, of, switchMap} from 'rxjs';
+import {HttpErrorResponse} from '@angular/common/http';
+import {MainContainerComponent, ToastService} from 'ngx-dabd-grupo01';
 import {LoginService} from "../../../../services/login.service";
 import {UserService} from "../../../../services/user.service";
 import {SessionService} from "../../../../services/session.service";
