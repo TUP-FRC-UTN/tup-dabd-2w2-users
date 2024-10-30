@@ -1,0 +1,20 @@
+@if (isAuthenticated$ | async ) {
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+
+  <div class="main-container d-flex">
+    <!-- Sidebar -->
+    <app-sidebar></app-sidebar>
+
+    <!-- Contenido principal -->
+    <div class="content-container flex-grow-1 pt-5">
+      <router-outlet></router-outlet>
+    </div>
+
+    <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+  </div>
+
+} @else {
+  <!-- Template para la pantalla de login -->
+  <app-login></app-login>
+}
