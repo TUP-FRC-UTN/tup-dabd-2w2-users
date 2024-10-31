@@ -181,6 +181,7 @@ export class CadastreOwnerFormComponent {
         switchMap((plot) => {
           if (plot) {
             this.plot = plot;
+            console.log(this.owner)
             return this.ownerService.createOwner(this.owner, '1');
           } else {
             return [];
@@ -249,13 +250,8 @@ export class CadastreOwnerFormComponent {
       (this.owner.birthdate = this.ownerForm.get('birthdate')?.value || ''),
       // (this.owner.kycStatus = undefined),
       // (this.owner.isActive = undefined),
-      this.id
-        ? (this.owner.contacts = this.contacts.map((contact) => ({
-          id: contact.id,
-          value: contact.contactValue,
-        }))[0])
-        : (this.owner.contacts = this.contacts),
-      (this.owner.addresses = this.getAddressValues());
+      (this.owner.contacts = [...this.contacts]),
+      (this.owner.addresses = [...this.addresses]);
   }
 
   fillFieldsToUpdate(owner: any): void {
@@ -285,6 +281,7 @@ export class CadastreOwnerFormComponent {
       country: address?.country ? address.country : '',
       postalCode: address?.postalCode ? address.postalCode : null,
     });
+    this.addresses = owner.addresses
     this.contacts = owner.contacts;
   }
 

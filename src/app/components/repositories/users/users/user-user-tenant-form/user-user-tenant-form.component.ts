@@ -146,6 +146,10 @@ export class UserUserTenantFormComponent {
             userName: this.user.userName,
           });
 
+          if (this.user.plotId) {
+            this.setPlotValue(this.user.plotId)
+          }
+
           if (this.user.addresses) {
             this.addresses = [...this.user.addresses];
             if (this.addresses.length > 0) {
@@ -326,6 +330,17 @@ export class UserUserTenantFormComponent {
         this.toastService.sendError("Error recuperando sus lotes. Reinicie la pagina.")
       }
     )
+  }
+
+  setPlotValue(plotId:number) {
+    const plotFormGroup = this.userForm.get('plotForm') as FormGroup;
+    this.plotService.getPlotById(plotId).subscribe(
+      response => {
+        console.log(response);
+        plotFormGroup.patchValue({
+          plotAssign: response.id
+        })
+      })
   }
   //#endregion
 
