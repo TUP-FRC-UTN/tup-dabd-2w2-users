@@ -192,6 +192,9 @@ export class FilesFormComponent implements OnInit {
     });
   }
 
+
+  // TODO
+  // modificar para que entre a revisar en las dos listas -------------------------------------------------
   private isFileNameInMap(fileName: string): boolean {
     for (const file of this.files.values()) {
       if (file.name === fileName) {
