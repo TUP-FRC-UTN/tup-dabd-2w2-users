@@ -3,12 +3,14 @@
 
   <div class="card-body">
 
-    <app-cadastre-filter-buttons
+    <app-cadastre-owner-filter-buttons
       #filterComponent
       [ownersList]="owners"
       [tableName]="tableName.nativeElement"
-      formPath="/owner/form">
-    </app-cadastre-filter-buttons>
+      formPath="/owner/form"
+      [dictionaries]="ownerDicitionaries"
+      objectName="PROPIETARIOS"    
+    ></app-cadastre-owner-filter-buttons>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div class="btn-group me-5" role="group">

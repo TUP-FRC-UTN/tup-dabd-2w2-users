@@ -16,19 +16,21 @@ import {
 import { NgbModal, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import {OwnerService} from "../../../../../services/owner.service";
 import {DocumentTypeDictionary, Owner, OwnerFilters, OwnerTypeDictionary} from "../../../../../models/owner";
-import {CadastreFilterButtonsComponent} from "../cadastre-filter-buttons/cadastre-filter-buttons.component";
+import { CadastreOwnerFilterButtonsComponent } from '../cadastre-owner-filter-buttons/cadastre-owner-filter-buttons.component';
+import { CadastreOwnerDetailComponent } from "../cadastre-owner-detail/cadastre-owner-detail.component";
 
 @Component({
   selector: 'app-cadastre-owner-list',
   standalone: true,
   imports: [
     CommonModule,
-    CadastreFilterButtonsComponent,
     FormsModule,
     MainContainerComponent,
     NgbPagination,
     ConfirmAlertComponent,
-  ],
+    CadastreOwnerDetailComponent,
+    CadastreOwnerFilterButtonsComponent
+],
   templateUrl: './cadastre-owner-list.component.html',
   styleUrl: './cadastre-owner-list.component.css'
 })
@@ -70,7 +72,7 @@ export class CadastreOwnerListComponent {
   ownerDicitionaries = [this.documentTypeDictionary, this.ownerTypeDictionary];
 
   @ViewChild('filterComponent')
-  filterComponent!: CadastreFilterButtonsComponent;
+  filterComponent!: CadastreOwnerFilterButtonsComponent<Owner>;
   @ViewChild('ownersTable', { static: true })
   tableName!: ElementRef<HTMLTableElement>;
 

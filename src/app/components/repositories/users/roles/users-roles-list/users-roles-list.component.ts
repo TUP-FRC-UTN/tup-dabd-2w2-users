@@ -62,7 +62,7 @@ export class UsersRolesListComponent {
   }
 
   getAllRoles(){
-    this.roleService.getAllRoles(this.currentPage - 1, this.pageSize, this.retrieveRolesByActive).subscribe({
+    this.roleService.getAllRoles(this.currentPage, this.pageSize, this.retrieveRolesByActive).subscribe({
       next: (response: any) => {
         this.roles = response.content;
         this.filteredRoles = [...this.roles];
