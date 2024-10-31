@@ -16,20 +16,20 @@ import {PlotService} from "../../../../../services/plot.service";
 import {Plot} from "../../../../../models/plot";
 import {Owner} from "../../../../../models/owner";
 import {plotForOwnerValidator} from "../../../../../validators/cadastre-plot-for-owner";
-import {BatchFileType, FileTypeMap, FileUploadData} from "../../../../../models/file";
+import {BatchFileType, FileTypeMap, FileUploadData, FileWithTypes} from "../../../../../models/file";
 
 interface FileData {
   fileType: BatchFileType;
   name: string | null | undefined;
 }
 
-interface FormData {
+/* interface FormData {
   fileTypeFront: string | null | undefined;
   nameFront: string | null | undefined;
   fileTypeBack: string | null | undefined;
   nameBack: string | null | undefined;
   files: FileData[];
-}
+} */
 
 @Component({
   selector: 'app-files-form',
@@ -47,6 +47,9 @@ export class FilesFormComponent implements OnInit {
   private plotService = inject(PlotService);
   private toastService = inject(ToastService);
 
+
+  BatchFileType = BatchFileType;
+
   selectedFiles: File[] = [];
   isUploading: boolean = false;
   id: string | null = null;
@@ -54,17 +57,21 @@ export class FilesFormComponent implements OnInit {
   fileTypeOptions!: any;
   owner!: Owner;
   files: Map<string, File> = new Map();
+
+  ownerFiles: FileWithTypes[] = [];
+  plotFiles: FileWithTypes[] = [];
+  
   fileTypes: Map<string, string> = new Map();
 
   filesForm = new FormGroup({
     dniBack: new FormControl('', [Validators.required]),
     dniFront: new FormControl('', [Validators.required]),
-    fileTypeFront: new FormControl('', [Validators.required]),
+    /* fileTypeFront: new FormControl('', [Validators.required]),
     nameFront: new FormControl('', [Validators.required]),
     contentTypeFront: new FormControl('', [Validators.required]),
     fileTypeBack: new FormControl('', [Validators.required]),
     nameBack: new FormControl('', [Validators.required]),
-    contentTypeBack: new FormControl('', [Validators.required]),
+    contentTypeBack: new FormControl('', [Validators.required]), */
     filesInput: new FormArray<FormGroup>([]),
   });
 
@@ -82,12 +89,12 @@ export class FilesFormComponent implements OnInit {
         [plotForOwnerValidator(this.plotService)]
       ),
       plotFile: new FormControl('', [Validators.required]),
-      fileType: new FormControl('', [Validators.required]),
+      /* fileType: new FormControl('', [Validators.required]),
       name: new FormControl('', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
-      ]),
+      ]), */
     });
 
     this.filesInput.push(fileInput);
@@ -101,7 +108,7 @@ export class FilesFormComponent implements OnInit {
 
   ngOnInit() {
     this.setEnums();
-    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    /* this.id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.id) {
       this.ownerService.getOwnerById(parseInt(this.id, 10)).subscribe({
         next: (response) => {
@@ -111,13 +118,16 @@ export class FilesFormComponent implements OnInit {
           console.error('Error al obtener owners:', error);
         },
       });
-    }
+    } */
   }
   
 
   onSubmit() {
     console.log("Archivos para subir. onUpload() ", this.files);
-    this.onUploadNacho();
+
+    
+
+    // this.onUploadNacho();
   }
 
   /**
@@ -125,25 +135,47 @@ export class FilesFormComponent implements OnInit {
    *
    * @param event The file input event containing the selected file.
    */
-   onFileSelected(event: Event, controlName: string): void {
+   onFileSelectedOwner(event: Event, controlName: string, fType: BatchFileType): void {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
       const renamedFile: File = this.renameFileIfNeeded(target.files[0]);
-      this.files.set(controlName, renamedFile);
+      this.ownerFiles.push({
+        id: controlName,
+        file: renamedFile,
+        type: fType
+      });
     } else {
-      this.files.delete(controlName);
+      this.ownerFiles.filter(file => file.id != controlName);
     }
-    console.log("File map: ", this.files);
+    console.log("Files del owner: ", this.ownerFiles);
   }
 
-  onFileTypeSelected(event: Event, controlName: string): void {
+  onFileSelectedPlot(event: Event, controlName: string): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      const renamedFile: File = this.renameFileIfNeeded(target.files[0]);
+      this.plotFiles.push({
+        id: controlName,
+        file: renamedFile,
+        type: BatchFileType.PURCHASE_SALE
+      });
+    } else {
+      this.plotFiles.filter(file => file.id != controlName);
+    }
+    console.log("Files del plot: ", this.plotFiles);
+  }
+
+  /* onFileTypeSelected(event: Event, controlName: string): void {
+    console.log("holalalala");
+
     const selectElement = event.target as HTMLSelectElement;
+    console.log(selectElement);
     if (selectElement) {
       this.fileTypes.set(controlName, selectElement.value);
     } else {
       this.fileTypes.delete(controlName);
     }
-  }
+  } */
 
   renameFileIfNeeded(originalFile: File): File {
     let counter = 0;
@@ -173,7 +205,7 @@ export class FilesFormComponent implements OnInit {
   /**
    * Upload the selected file to the server using the FileUploadService.
    */
-  onUpload(): void {
+  /* onUpload(): void {
     console.log("ARCHIVOS SELECCIONADOS ", this.selectedFiles);
     if (this.selectedFiles.length > 0) {
       this.isUploading = true;
@@ -210,12 +242,13 @@ export class FilesFormComponent implements OnInit {
       this.toastService.sendError('No hay archivos seleccionados para cargar');
     }
   }
-
+ */
   onUploadNacho(): void {
-    // TODO: Cambiar esta validacion para que en vez de ver si existe algun archivo
-    // que se fije que esten todos los archivos.
+    
+    // valido que haya al menos tres archivos (2 dni y 1 lote)
     console.log("fileTypes.size: ", this.fileTypes.size);
-    if (!this.files.get('dniFront') || !this.files.get('dniFront')) {
+
+    if (!this.files.get('dniFront') || !this.files.get('dniBack')) {
       this.toastService.sendError('No hay archivos de dni cargados');
       return;
     } else if (this.files.size < 3) {
@@ -262,7 +295,7 @@ export class FilesFormComponent implements OnInit {
         'fileType' + i
       )!;
     });
-    return { typeMap: typeMap } as FileTypeMap;
+    return { type_map: typeMap } as FileTypeMap;
   }
 
   private getSelectedFiles(): File[] {
@@ -275,7 +308,7 @@ export class FilesFormComponent implements OnInit {
    * Collects and structures the form data into a single object,
    * including files and details for each plot input.
    */
-  getFormData(): FormData {
+  /* getFormData(): FormData {
     const formData: FormData = {
       fileTypeFront: this.filesForm.value.fileTypeFront,
       nameFront: this.filesForm.value.nameFront,
@@ -293,7 +326,7 @@ export class FilesFormComponent implements OnInit {
       formData.files.push(fileData);
     });
     return formData;
-  }
+  } */
 
 
 
@@ -311,7 +344,7 @@ export class FilesFormComponent implements OnInit {
    * @returns An array of FileUploadData objects, each containing a file
    *          and its associated type for upload.
    */
-  buildFileUploadData(formData: FormData, selectedFiles: File[]): FileUploadData[] {
+ /*  buildFileUploadData(formData: FormData, selectedFiles: File[]): FileUploadData[] {
     const fileUploadData: FileUploadData[] = [];
     if (formData.nameFront && formData.fileTypeFront) {
       fileUploadData.push({
@@ -337,7 +370,7 @@ export class FilesFormComponent implements OnInit {
       }
     });
     return fileUploadData;
-  }
+  } */
 
 
   // no esta en la nueva implementacion para carga de archivos

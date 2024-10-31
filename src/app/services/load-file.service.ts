@@ -82,7 +82,7 @@ export class LoadFileService {
       )
     );
     files.forEach((file) => {
-      if(file.type === 'ID_DOCUMENT_FRONT' || file.type === 'ID_DOCUMENT_BACK') {
+      if(fileTypeMap.type_map[file.name] === 'ID_DOCUMENT_FRONT' || fileTypeMap.type_map[file.name] === 'ID_DOCUMENT_BACK') {
         formDataOwner.append('files', file)
       }
     });
@@ -96,7 +96,7 @@ export class LoadFileService {
 
   // metodo para subir archivos de Plots
 
-  uploadFilesPlot(files: File[], fileTypeMap: FileTypeMap, ownerId: number, headerUserId: number): Observable<Document[]> {
+  uploadFilesPlot(files: File[], fileTypeMap: FileTypeMap, plotId: number, headerUserId: number): Observable<Document[]> {
 
     const formDataPlot = new FormData();
     formDataPlot.append(
@@ -111,7 +111,7 @@ export class LoadFileService {
       )
     );
     files.forEach((file) => {
-      if(file.type === 'ID_DOCUMENT_FRONT' || file.type === 'ID_DOCUMENT_BACK') {
+      if(fileTypeMap.type_map[file.name] === 'PURCHASE_SALE') {
         formDataPlot.append('files', file)
       } 
     });
@@ -119,7 +119,7 @@ export class LoadFileService {
     const headers = new HttpHeaders({
       'x-user-id': headerUserId.toString()
     });
-    return this.http.post<Document[]>(`${this.fileUploadUrl}/${ownerId}/files`, formDataPlot, { headers });
+    return this.http.post<Document[]>(`${this.fileUploadUrl}/${plotId}/files`, formDataPlot, { headers });
   }
 
   updateFileNameAndType(file: File, newName: string): File {

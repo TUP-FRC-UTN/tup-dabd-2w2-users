@@ -57,7 +57,7 @@
       id="inputGroupFile01"
       formControlName="dniFront"
       accept="image/*,.pdf"
-      (change)="onFileSelected($event, 'dniFront')"
+      (change)="onFileSelectedOwner($event, 'dniFront', BatchFileType.ID_DOCUMENT_FRONT)"
     />
   </div>
 
@@ -117,7 +117,7 @@
       id="inputGroupFile02"
       formControlName="dniBack"
       accept="image/*,.pdf"
-      (change)="onFileSelected($event, 'dniBack')"
+      (change)="onFileSelectedOwner($event, 'dniBack', BatchFileType.ID_DOCUMENT_BACK)"
     />
   </div>
 
@@ -199,58 +199,14 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="row g-0 align-items-center">
-            <div class="col-auto">
-              <label class="col-form-label me-2">Tipo de archivo</label>
-            </div>
-            <div class="col">
-              <select
-                id="fileType"
-                class="form-select"
-                formControlName="fileType"
-              >
-                @for(fileType of fileTypeOptions; track $index) {
-                <option [value]="fileType.value">{{ fileType.display }}</option>
-                }
-              </select>
-            </div>
-          </div>
-          <div>
-            @if(filesForm.get('fileType')?.invalid &&
-            filesForm.get('fileType')?.touched) {
-            @if(filesForm.get('fileType')?.errors?.['required']){
-            <small class="text-danger ms-2">requerido</small>
-            } }
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="row g-0 align-items-center">
-            <div class="col-auto">
-              <label class="col-form-label me-2">Nombre</label>
-            </div>
-            <div class="col">
-              <input type="text" class="form-control" formControlName="name" />
-            </div>
-          </div>
-          <div>
-            @if(filesForm.get('name')?.invalid && filesForm.get('name')?.touched)
-            { @if(filesForm.get('name')?.errors?.['required']){
-            <small class="text-danger ms-2">requerido</small>
-            } @if(filesForm.get('name')?.errors?.['minlength']){
-            <small class="text-danger ms-2">al menos 2 caracteres</small>
-            } @if(filesForm.get('name')?.errors?.['maxlength']){
-            <small class="text-danger ms-2">máximo 50 caracteres</small>
-            } }
-          </div>
-        </div>
+        
         <div class="col-md-11">
           <input
             type="file"
             class="form-control"
             formControlName="plotFile"
             accept="image/*,.pdf"
-            (change)="onFileSelected($event, 'plotfile + ${{$index}}')"
+            (change)="onFileSelectedPlot($event, 'dniBack')"
           />
           @if(fileInput.get('plotFile')?.invalid &&
           fileInput.get('plotFile')?.touched){
