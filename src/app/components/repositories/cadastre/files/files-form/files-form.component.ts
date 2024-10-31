@@ -116,6 +116,7 @@ export class FilesFormComponent implements OnInit {
   
 
   onSubmit() {
+    console.log("Archivos para subir. onUpload() ", this.files);
     this.onUploadNacho();
   }
 
@@ -132,8 +133,7 @@ export class FilesFormComponent implements OnInit {
     } else {
       this.files.delete(controlName);
     }
-    console.log("File map: ");
-    console.log(this.files);
+    console.log("File map: ", this.files);
   }
 
   onFileTypeSelected(event: Event, controlName: string): void {
@@ -174,10 +174,13 @@ export class FilesFormComponent implements OnInit {
    * Upload the selected file to the server using the FileUploadService.
    */
   onUpload(): void {
+    console.log("ARCHIVOS SELECCIONADOS ", this.selectedFiles);
     if (this.selectedFiles.length > 0) {
       this.isUploading = true;
       const formData = this.getFormData();
       const fileUploadData = this.buildFileUploadData(formData, this.selectedFiles);
+
+      console.log("DATA PARA SUBIR: fileUploadData = ", fileUploadData);
       
       //  ---------------------------------- que hace este if(true) -----------------------------------
       
@@ -222,6 +225,10 @@ export class FilesFormComponent implements OnInit {
       this.toastService.sendError('Seleccione un tipo de archivo de lote a cargar');
       return;
     }
+
+    // hablar con nacho para entender bien este método
+
+
     const fileTypeMap: FileTypeMap = this.createFileTypeMap();
     this.fileService
       .uploadFilesNacho(this.getSelectedFiles(), fileTypeMap, 1, 1)

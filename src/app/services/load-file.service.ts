@@ -8,7 +8,8 @@ import { FileUploadData, Document, FileTypeMap } from '../models/file';
 })
 export class LoadFileService {
 
-  private uploadUrl = 'http://localhost:8282/owners';
+  private ownerUploadUrl = 'http://localhost:8282/owners';
+  private fileUploadUrl = 'http://localhost:8282/files';
 
   constructor(private http: HttpClient) { }
 
@@ -41,7 +42,7 @@ export class LoadFileService {
     const headers = new HttpHeaders({
       'x-user-id': headerUserId.toString()
     });
-    return this.http.post<File[]>(`${this.uploadUrl}/${ownerId}/files`, formData, { headers });
+    return this.http.post<File[]>(`${this.ownerUploadUrl}/${ownerId}/files`, formData, { headers });
   }
 
   uploadFilesNacho(files: File[], fileTypeMap: FileTypeMap, ownerId: number, headerUserId: number): Observable<Document[]> {
@@ -61,7 +62,64 @@ export class LoadFileService {
     const headers = new HttpHeaders({
       'x-user-id': headerUserId.toString()
     });
-    return this.http.post<Document[]>(`${this.uploadUrl}/${ownerId}/files`, formData, { headers });
+    return this.http.post<Document[]>(`${this.ownerUploadUrl}/${ownerId}/files`, formData, { headers });
+  }
+
+
+  // metodo para subir archivos de Owners
+  uploadFilesOwner(files: File[], fileTypeMap: FileTypeMap, ownerId: number, headerUserId: number): Observable<Document[]> {
+    
+    const formDataOwner = new FormData();
+    formDataOwner.append(
+      'typeMap',
+      new Blob(
+        [
+          JSON.stringify(fileTypeMap),
+        ],
+        {
+          type: 'application/json',
+        }
+      )
+    );
+    files.forEach((file) => {
+      if(file.type === 'ID_DOCUMENT_FRONT' || file.type === 'ID_DOCUMENT_BACK') {
+        formDataOwner.append('files', file)
+      }
+    });
+
+    const headers = new HttpHeaders({
+      'x-user-id': headerUserId.toString()
+    });
+    return this.http.post<Document[]>(`${this.ownerUploadUrl}/${ownerId}/files`, formDataOwner, { headers });
+  }
+
+
+  // metodo para subir archivos de Plots
+
+  uploadFilesPlot(files: File[], fileTypeMap: FileTypeMap, ownerId: number, headerUserId: number): Observable<Document[]> {
+
+    const formDataPlot = new FormData();
+    formDataPlot.append(
+      'typeMap',
+      new Blob(
+        [
+          JSON.stringify(fileTypeMap),
+        ],
+        {
+          type: 'application/json',
+        }
+      )
+    );
+    files.forEach((file) => {
+      if(file.type === 'ID_DOCUMENT_FRONT' || file.type === 'ID_DOCUMENT_BACK') {
+        formDataPlot.append('files', file)
+      } 
+    });
+
+    const headers = new HttpHeaders({
+      'x-user-id': headerUserId.toString()
+    });
+    return this.http.post<Document[]>(`${this.fileUploadUrl}/${ownerId}/files`, formDataPlot, { headers });
   }
 
   updateFileNameAndType(file: File, newName: string): File {
