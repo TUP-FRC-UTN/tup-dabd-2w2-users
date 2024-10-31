@@ -84,7 +84,7 @@ export class UserService {
    * @returns Observable con los datos del usuario.
    */
   getUserById2(id: number): Observable<User> {
-    return this.http.get<User>(`${this.host}/users/${id}`)
+    return this.http.get<User>(`${this.host}/${id}`)
       .pipe(
         map(response => response),
         catchError(this.handleError)

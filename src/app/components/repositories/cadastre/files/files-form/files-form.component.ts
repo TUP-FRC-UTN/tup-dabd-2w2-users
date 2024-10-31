@@ -283,6 +283,7 @@ export class FilesFormComponent implements OnInit {
       nameBack: this.filesForm.value.nameBack,
       files: [],
     };
+    console.log("AAAAAAAAAAA", this.filesInput)
     this.filesInput.controls.forEach((control) => {
       const fileData = {
         fileType: control.value.fileType,
