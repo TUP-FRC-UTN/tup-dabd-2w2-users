@@ -17,6 +17,8 @@ export enum BatchFileType {
     CUIT_BACK = 'Dorso CUIT',
     OTHER = 'Otro',
   }
+
+  // ver de aca cuales tienen que quedar
   
 
 export interface Document {
@@ -28,6 +30,11 @@ export interface Document {
     approvalStatus: string;
     reviewNote: string;
     isActive: boolean;
+}
+
+export interface FileTypeMap {
+  typeMap: {[key: string]: string};
+  // typeMap: Map<String, String>;
 }
 
 export const FileTypeDictionary: { [key: string]: string } = {

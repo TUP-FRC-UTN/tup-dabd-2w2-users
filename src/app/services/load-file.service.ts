@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { FileUploadData } from '../models/file';
+import { FileUploadData, Document, FileTypeMap } from '../models/file';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +42,26 @@ export class LoadFileService {
       'x-user-id': headerUserId.toString()
     });
     return this.http.post<File[]>(`${this.uploadUrl}/${ownerId}/files`, formData, { headers });
+  }
+
+  uploadFilesNacho(files: File[], fileTypeMap: FileTypeMap, ownerId: number, headerUserId: number): Observable<Document[]> {
+    const formData = new FormData();
+    formData.append(
+      'typeMap',
+      new Blob(
+        [
+          JSON.stringify(fileTypeMap),
+        ],
+        {
+          type: 'application/json',
+        }
+      )
+    );
+    files.forEach(file => formData.append('files', file));
+    const headers = new HttpHeaders({
+      'x-user-id': headerUserId.toString()
+    });
+    return this.http.post<Document[]>(`${this.uploadUrl}/${ownerId}/files`, formData, { headers });
   }
 
   updateFileNameAndType(file: File, newName: string): File {

@@ -16,7 +16,7 @@ import {PlotService} from "../../../../../services/plot.service";
 import {Plot} from "../../../../../models/plot";
 import {Owner} from "../../../../../models/owner";
 import {plotForOwnerValidator} from "../../../../../validators/cadastre-plot-for-owner";
-import {BatchFileType, FileUploadData} from "../../../../../models/file";
+import {BatchFileType, FileTypeMap, FileUploadData} from "../../../../../models/file";
 
 interface FileData {
   fileType: BatchFileType;
@@ -53,6 +53,8 @@ export class FilesFormComponent implements OnInit {
   plots: Plot[] = [];
   fileTypeOptions!: any;
   owner!: Owner;
+  files: Map<string, File> = new Map();
+  fileTypes: Map<string, string> = new Map();
 
   filesForm = new FormGroup({
     dniBack: new FormControl('', [Validators.required]),
@@ -69,6 +71,7 @@ export class FilesFormComponent implements OnInit {
   get filesInput(): FormArray {
     return this.filesForm.controls['filesInput'] as FormArray;
   }
+
 
   addFilesInput() {
     const fileInput = new FormGroup({
@@ -92,6 +95,8 @@ export class FilesFormComponent implements OnInit {
 
   removeFileInput(index: number) {
     this.filesInput.removeAt(index);
+    this.files.delete('plotFile' + index);
+    this.fileTypes.delete('fileType' + index);
   }
 
   ngOnInit() {
@@ -108,9 +113,10 @@ export class FilesFormComponent implements OnInit {
       });
     }
   }
+  
 
   onSubmit() {
-    this.onUpload();
+    this.onUploadNacho();
   }
 
   /**
@@ -118,11 +124,49 @@ export class FilesFormComponent implements OnInit {
    *
    * @param event The file input event containing the selected file.
    */
-  onFileSelected(event: Event, control: string): void {
+   onFileSelected(event: Event, controlName: string): void {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
-      this.selectedFiles = [...this.selectedFiles].concat(Array.from(target.files));
+      const renamedFile: File = this.renameFileIfNeeded(target.files[0]);
+      this.files.set(controlName, renamedFile);
+    } else {
+      this.files.delete(controlName);
     }
+    console.log("File map: ");
+    console.log(this.files);
+  }
+
+  onFileTypeSelected(event: Event, controlName: string): void {
+    const selectElement = event.target as HTMLSelectElement;
+    if (selectElement) {
+      this.fileTypes.set(controlName, selectElement.value);
+    } else {
+      this.fileTypes.delete(controlName);
+    }
+  }
+
+  renameFileIfNeeded(originalFile: File): File {
+    let counter = 0;
+    let newFileName = originalFile.name;
+    console.log("Entro a renombrado");
+    while(this.isFileNameInMap(newFileName)) {
+      console.log("Colision");
+      newFileName = counter + originalFile.name;
+      counter++;
+    }
+    return new File([originalFile], newFileName, {
+      type: originalFile.type,
+      lastModified: originalFile.lastModified,
+    });
+  }
+
+  private isFileNameInMap(fileName: string): boolean {
+    for (const file of this.files.values()) {
+      if (file.name === fileName) {
+        return true;
+      }
+    }
+    return false;
   }
 
 
@@ -134,7 +178,10 @@ export class FilesFormComponent implements OnInit {
       this.isUploading = true;
       const formData = this.getFormData();
       const fileUploadData = this.buildFileUploadData(formData, this.selectedFiles);
-      if (true) {
+      
+      //  ---------------------------------- que hace este if(true) -----------------------------------
+      
+      if (true) { 
         this.fileService
           .uploadFiles(1, 1, fileUploadData) // mock owner and user ids
           .subscribe({
@@ -161,6 +208,62 @@ export class FilesFormComponent implements OnInit {
     }
   }
 
+  onUploadNacho(): void {
+    // TODO: Cambiar esta validacion para que en vez de ver si existe algun archivo
+    // que se fije que esten todos los archivos.
+    console.log("fileTypes.size: ", this.fileTypes.size);
+    if (!this.files.get('dniFront') || !this.files.get('dniFront')) {
+      this.toastService.sendError('No hay archivos de dni cargados');
+      return;
+    } else if (this.files.size < 3) {
+      this.toastService.sendError('Agregue por lo menos un lote y cargue un archivo');
+      return;
+    } else if (this.fileTypes.size == 0) {
+      this.toastService.sendError('Seleccione un tipo de archivo de lote a cargar');
+      return;
+    }
+    const fileTypeMap: FileTypeMap = this.createFileTypeMap();
+    this.fileService
+      .uploadFilesNacho(this.getSelectedFiles(), fileTypeMap, 1, 1)
+      .subscribe({
+        next: (response) => {
+          console.log('Files uploaded successfully:', response);
+          this.isUploading = false;
+        },
+        error: (error) => {
+          console.error('Error uploading files:', error);
+          this.toastService.sendError('Error al cargar los archivos');
+          this.isUploading = false;
+        },
+        complete: () => {
+          console.log('File upload process completed');
+          this.toastService.sendSuccess('Archivos cargados exitosamente.');
+          this.isUploading = false;
+          this.router.navigate(['/owner/list']);
+        },
+      });
+  }
+
+  private createFileTypeMap() {
+    const typeMap: { [key: string]: string } = {};
+    typeMap[this.files.get('dniFront')?.name!] = 'ID_DOCUMENT_FRONT';
+    typeMap[this.files.get('dniBack')?.name!] = 'ID_DOCUMENT_BACK';
+    //plotFile
+    //fileType
+    this.filesInput.controls.forEach((formGroup, i) => {
+      typeMap[this.files.get('plotFile' + i)?.name!] = this.fileTypes.get(
+        'fileType' + i
+      )!;
+    });
+    return { typeMap: typeMap } as FileTypeMap;
+  }
+
+  private getSelectedFiles(): File[] {
+    const filteredFiles: File[] = [];
+    this.files.forEach((file, controlName) => filteredFiles.push(file));
+    return filteredFiles;
+  }
+
   /**
    * Collects and structures the form data into a single object,
    * including files and details for each plot input.
@@ -183,6 +286,9 @@ export class FilesFormComponent implements OnInit {
     });
     return formData;
   }
+
+
+
 
   /**
    * Constructs an array of FileUploadData objects from a FormData object.
@@ -225,6 +331,8 @@ export class FilesFormComponent implements OnInit {
     return fileUploadData;
   }
 
+
+  // no esta en la nueva implementacion para carga de archivos
   setEnums() {
     this.fileTypeOptions = Object.entries(BatchFileType).map(
       ([key, value]) => ({
