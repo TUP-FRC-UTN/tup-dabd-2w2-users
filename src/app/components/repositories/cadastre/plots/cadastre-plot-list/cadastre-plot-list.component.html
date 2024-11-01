@@ -4,13 +4,13 @@
       <!-- Sección de búsqueda y filtros -->
       <div class="btn-group me-5" role="group">
           <div class="col-sm-12 col-md-8 col-xl-8">
-            <div class="input-group" style="max-width: 280px">
-          <span class="input-group-text" id="search-icon">
-            <i class="bi bi-search"></i>
-          </span>
+            <div class="input-group" >
+              <span class="input-group-text" id="search-icon">
+                <i class="bi bi-search"></i>
+              </span>
               <input
                 type="text"
-                class="form-control"
+                class="form-control flex-grow-1"
                 id="filter-text-box"
                 (input)="onFilterTextBoxChanged($event)"
                 placeholder="Buscar..."
@@ -34,7 +34,6 @@
                   </button>
                 </li>
               </ul>
-
             </div>
           </div>
       </div>
