@@ -23,13 +23,14 @@ export class UsersRolesFilterButtonsComponent<T extends Record<string, any>> {
   // Se va a usar para los nombres de los archivos.
   @Input() objectName : string = ""
 
+  headers : string[] = ['Código', 'Nombre', 'Nombre especial', 'Descripción', 'Activo']
+
   private dataMapper = (item: T) => [
-    item["plotNumber"],
-    item["blockNumber"],
-    item["totalArea"],
-    item['builtArea'],
-    item["plotStatus"],
-    item["plotType"]
+    item["code"],
+    item["name"],
+    item["prettyName"],
+    item['description'],  
+    item['isActive']? 'Activo' : 'Inactivo',
   ];
 
   private LIMIT_32BITS_MAX = 2147483647
@@ -60,9 +61,9 @@ export class UsersRolesFilterButtonsComponent<T extends Record<string, any>> {
    * Calls the `exportTableToPdf` method from the `CadastreExcelService`.
    */
   exportToPdf() {
-    this.roleService.getAllRoles(0, this.LIMIT_32BITS_MAX, true).subscribe({
+    this.roleService.getAllRoles(0, this.LIMIT_32BITS_MAX).subscribe({
       next: (data) => {
-        this.excelService.exportListToPdf(data.content, `${this.getActualDayFormat()}_${this.objectName}`, [], this.dataMapper);
+        this.excelService.exportListToPdf(data.content, `${this.getActualDayFormat()}_${this.objectName}`, this.headers, this.dataMapper);
       },
       error: () => { console.log("Error retrieved all, on export component.") }
     });
@@ -73,7 +74,7 @@ export class UsersRolesFilterButtonsComponent<T extends Record<string, any>> {
    * Calls the `exportTableToExcel` method from the `CadastreExcelService`.
    */
   exportToExcel() {
-    this.roleService.getAllRoles(0, this.LIMIT_32BITS_MAX, true).subscribe({
+    this.roleService.getAllRoles(0, this.LIMIT_32BITS_MAX).subscribe({
       next: (data) => {
         this.excelService.exportListToExcel(data.content, `${this.getActualDayFormat()}_${this.objectName}`);
       },
