@@ -18,38 +18,29 @@
               <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-funnel-fill"></i>
               </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" (click)="changeFilterMode(filterTypes.BLOCK_NUMBER)">Manzana</a></li>
-                <li><input type="date" class="form-control"></li>
-                <li><a class="dropdown-item" (click)="changeFilterMode(filterTypes.PLOT_STATUS)">Estado de Lote</a></li>
-                <li><a class="dropdown-item" (click)="changeFilterMode(filterTypes.PLOT_TYPE)">Tipo de Lote</a></li>
-                <button type="button" class="btn btn-outline-danger" (click)="changeFilterMode(filterTypes.NOTHING)">
-                  <i class="bi bi-trash-fill"></i>
-                </button>
+              <ul class="dropdown-menu p-3">
+                <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(filterTypes.BLOCK_NUMBER)">Manzana</a></li>
+                <li><input type="number" class="form-control"></li>
+                <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(filterTypes.PLOT_STATUS)">Estado de Lote</a></li>
+                <li><select name="" id="" class="form-control"></select></li>
+                <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(filterTypes.PLOT_TYPE)">Tipo de Lote</a></li>
+                <li><select name="" id="" class="form-control mb-3"></select></li> <!-- Espacio añadido -->
+                <li>
+                  <button type="button" class="btn btn-outline-danger me-2" (click)="changeFilterMode(filterTypes.NOTHING)">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-primary" (click)="changeFilterMode(filterTypes.NOTHING)">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </li>
               </ul>
+
             </div>
           </div>
       </div>
 
       <!-- Botones de Activo, Inactivo, Todo y "+" en el mismo grupo -->
       <div class="d-flex align-items-center">
-        <div class="btn-group me-3" role="group" aria-label="Basic radio toggle button group">
-          <input type="radio" class="btn-check"
-                 name="btnradio" id="btnradio1"
-                 autocomplete="off" (change)="changeActiveFilter(true)" checked>
-          <label class="btn btn-outline-primary" for="btnradio1">Activos</label>
-
-          <input type="radio" class="btn-check"
-                 name="btnradio" id="btnradio2"
-                 autocomplete="off" (change)="changeActiveFilter(false)">
-          <label class="btn btn-outline-primary" for="btnradio2">Inactivos</label>
-
-          <input type="radio" class="btn-check"
-                 name="btnradio" id="btnradio3"
-                 autocomplete="off" (change)="changeActiveFilter()">
-          <label class="btn btn-outline-primary" for="btnradio3">Todos</label>
-        </div>
-
         <!-- Botón "+" -->
         <button type="button" class="btn btn-outline-primary" (click)="redirectToForm()">+</button>
 

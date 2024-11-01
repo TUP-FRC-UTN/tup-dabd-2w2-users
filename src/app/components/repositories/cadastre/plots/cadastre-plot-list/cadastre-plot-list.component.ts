@@ -56,17 +56,19 @@ export class CadastrePlotListComponent {
   formPath: string = "/plot/form";
   objectName : string = ""
   LIMIT_32BITS_MAX = 2147483647
-  private filterSubject = new Subject<Plot[]>();
+  filterSubject = new Subject<Plot[]>();
   filter$ = this.filterSubject.asObservable();
 
   headers : string[] = ['Nro. de Manzana', 'Nro. de Lote', 'Area Total', 'Area Construida', 'Tipo de Lote', 'Estado del Lote', 'Activo']
-  private dataMapper = (item: Plot) => [
-    item["plotNumber"],
+
+  dataMapper = (item: Plot) => [
     item["blockNumber"],
+    item["plotNumber"],
     item["totalArea"],
     item['builtArea'],
-    item["plotStatus"],
-    item["plotType"]
+    this.translateDictionary(item["plotType"], this.dictionaries[0]),
+    this.translateDictionary(item["plotStatus"], this.dictionaries[1]),
+    item['isActive']? 'Activo' : 'Inactivo',
   ];
   //#endregion
 
