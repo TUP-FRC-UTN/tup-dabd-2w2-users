@@ -9,13 +9,14 @@
           class="form-control"
           id="filter-text-box"
           (input)="onFilterTextBoxChanged($event)"
+          placeholder="Buscar..."
         />
       </div>
     </div>
     <div
       class="col-sm-12 col-md-4 col-xl-64 text-xl-center text-center mt-3 mt-md-0 d-flex align-items-center justify-content-end"
     >
-      <button type="button" class="btn btn-outline-primary" (click)="redirectToForm()">Nuevo</button>
+      <button type="button" class="btn btn-outline-primary" (click)="redirectToForm()">+</button>
 
       <!-- Línea vertical -->
       <div class="vertical-line mx-3"></div>
@@ -34,4 +35,3 @@
       </button>
     </div>
   </div>
-  
