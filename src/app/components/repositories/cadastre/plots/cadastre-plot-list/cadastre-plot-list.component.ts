@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, Input, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {ConfirmAlertComponent, MainContainerComponent, ToastService} from "ngx-dabd-grupo01";
 import {NgbModal, NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
@@ -25,6 +25,7 @@ export class CadastrePlotListComponent {
   private plotService = inject(PlotService)
   private toastService = inject(ToastService)
   private modalService = inject(NgbModal)
+  private excelService = inject(CadastreExcelService);
   //#endregion
 
   //#region ATT de PAGINADO
@@ -50,10 +51,29 @@ export class CadastrePlotListComponent {
   filterInput : string = "";
   //#endregion
 
+  //#region ATT FILTER BUTTONS
+  itemsList!: Plot[];
+  formPath: string = "/plot/form";
+  objectName : string = ""
+  LIMIT_32BITS_MAX = 2147483647
+  private filterSubject = new Subject<Plot[]>();
+  filter$ = this.filterSubject.asObservable();
+
+  headers : string[] = ['Nro. de Manzana', 'Nro. de Lote', 'Area Total', 'Area Construida', 'Tipo de Lote', 'Estado del Lote', 'Activo']
+  private dataMapper = (item: Plot) => [
+    item["plotNumber"],
+    item["blockNumber"],
+    item["totalArea"],
+    item['builtArea'],
+    item["plotStatus"],
+    item["plotType"]
+  ];
+  //#endregion
+
   //#region ATT de DICCIONARIOS
   plotTypeDictionary = PlotTypeDictionary;
   plotStatusDictionary = PlotStatusDictionary;
-  plotDictionaries = [this.plotTypeDictionary, this.plotStatusDictionary]
+  dictionaries: Array<{ [key: string]: any }> = [this.plotStatusDictionary, this.plotTypeDictionary];
   //#endregion
 
   //#region NgOnInit | BUSCAR
@@ -173,6 +193,10 @@ export class CadastrePlotListComponent {
     }
   }
 
+  cleanAllFilters() {
+
+  }
+
   confirmFilterPlot() {
     switch (this.actualFilter) {
       case "NOTHING":
@@ -232,6 +256,10 @@ export class CadastrePlotListComponent {
   plotDetail(plotId : number) {
     this.router.navigate([`/plot/detail/${plotId}`])
   }
+
+  redirectToForm() {
+    this.router.navigate([this.formPath]);
+  }
   //#endregion
 
   //#region USO DE DICCIONARIOS
@@ -288,87 +316,7 @@ export class CadastrePlotListComponent {
   }
   //#endregion
 
-  // Inject the Excel service for export functionality
-  private excelService = inject(CadastreExcelService);
-
-  LIMIT_32BITS_MAX = 2147483647
-
-  headers : string[] = ['Nro. de Manzana', 'Nro. de Lote', 'Area Total', 'Area Construida', 'Tipo de Lote', 'Estado del Lote', 'Activo']
-
-  private dataMapper = (item: Plot) => [
-    item["plotNumber"],
-    item["blockNumber"],
-    item["totalArea"],
-    item['builtArea'],
-    item["plotStatus"],
-    item["plotType"]
-  ];
-
-  // Input to receive the HTML table from the parent
-  // Input to receive a generic list from the parent component
-  itemsList!: Plot[];
-  // Input to redirect to the form.
-  formPath: string = "";
-  // Represent the name of the object for the exports.
-  // Se va a usar para los nombres de los archivos.
-   objectName : string = ""
-  // Represent the dictionaries of ur object.
-  // Se va a usar para las traducciones de enum del back.
-  dictionaries: Array<{ [key: string]: any }> = [];
-
-  // Subject to emit filtered results
-  private filterSubject = new Subject<Plot[]>();
-  // Observable that emits filtered owner list
-  filter$ = this.filterSubject.asObservable();
-
-  // Se va a usar para los nombres de los archivos.
-  getActualDayFormat() {
-    const today = new Date();
-
-    const formattedDate = today.toISOString().split('T')[0];
-
-    return formattedDate;
-  }
-
-  /**
-   * Export the HTML table to a PDF file.
-   * Calls the `exportTableToPdf` method from the `CadastreExcelService`.
-   */
-  exportToPdf() {
-    this.plotService.getAllPlots(0, this.LIMIT_32BITS_MAX, true).subscribe(
-      response => {
-        this.excelService.exportListToPdf(response.content, `${this.getActualDayFormat()}_${this.objectName}`, this.headers, this.dataMapper);
-      },
-      error => {
-        console.log("Error retrieved all, on export component.")
-      }
-    )
-  }
-
-  /**
-   * Export the HTML table to an Excel file (.xlsx).
-   * Calls the `exportTableToExcel` method from the `CadastreExcelService`.
-   */
-  //#region TIENEN QUE MODIFICAR EL SERIVCIO CON SU GETALL
-  exportToExcel() {
-    this.plotService.getAllPlots(0, this.LIMIT_32BITS_MAX, true).subscribe(
-      response => {
-        this.excelService.exportListToExcel(response.content, `${this.getActualDayFormat()}_${this.objectName}`);
-      },
-      error => {
-        console.log("Error retrieved all, on export component.")
-      }
-    )
-  }
-  //#endregion
-
-  /**
-   * Filters the list of items based on the input value in the text box.
-   * The filter checks if any property of the item contains the search string (case-insensitive).
-   * The filtered list is then emitted through the `filterSubject`.
-   *
-   * @param event - The input event from the text box.
-   */
+  //#region METODOS FILTER BUTTONS
   onFilterTextBoxChanged(event: Event) {
     const target = event.target as HTMLInputElement;
 
@@ -410,11 +358,37 @@ export class CadastrePlotListComponent {
     }
     return;
   }
+  //#endregion
 
-  /**
-   * Redirects to the specified form path.
-   */
-  redirectToForm() {
-    this.router.navigate([this.formPath]);
+  //#region EXPORT FUNCTIONS
+  exportToPdf() {
+    let actualPageSize = this.pageSize;
+
+    this.plotService.getAllPlots(0, this.LIMIT_32BITS_MAX, true).subscribe(
+      response => {
+        this.excelService.exportListToPdf(response.content, `${this.getActualDayFormat()}_${this.objectName}`, this.headers, this.dataMapper);
+      },
+      error => {
+        console.log("Error retrieved all, on export component.")
+      }
+    )
   }
+
+  exportToExcel() {
+    this.plotService.getAllPlots(0, this.LIMIT_32BITS_MAX, true).subscribe(
+      response => {
+        this.excelService.exportListToExcel(response.content, `${this.getActualDayFormat()}_${this.objectName}`);
+      },
+      error => {
+        console.log("Error retrieved all, on export component.")
+      }
+    )
+  }
+
+  getActualDayFormat() {
+    const today = new Date();
+
+    return today.toISOString().split('T')[0];
+  }
+  //#endregion
 }
