@@ -1,69 +1,58 @@
-
 <app-main-container title="Lista de Propietarios">
 
-  <div class="card-body">
-
-    <app-cadastre-filter-buttons
-      #filterComponent
-      [ownersList]="owners"
-      [tableName]="tableName.nativeElement"
-      formPath="/owner/form">
-    </app-cadastre-filter-buttons>
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <div class="btn-group me-5" role="group">
-        <div class="d-flex align-items-center">
-          <div class="btn-group me-2">
-            <button type="button" class="btn btn-outline-danger" (click)="changeFilterMode(filterTypes.NOTHING)">
-              <i class="bi bi-trash-fill"></i> Limpiar
-            </button>
-
-
-            <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-funnel-fill"></i> Filtros
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" (click)="changeFilterMode(filterTypes.DOC_TYPE)">Tipo Documento</a></li>
-              <li><a class="dropdown-item" (click)="changeFilterMode(filterTypes.OWNER_TYPE)">Tipo Propietario</a></li>
-            </ul>
-          </div>
-
-          @if (applyFilterWithNumber === true || applyFilterWithCombo === true) {
-            <div class="d-flex">
-              @if (applyFilterWithNumber === true) {
-                <input type="number" class="form-control me-2" id="filter-number" [(ngModel)]="filterInput" name="ngModel" placeholder="Número de Lote">
-              } @else if (applyFilterWithCombo === true) {
-                <select id="content-filter" class="form-select me-2" [(ngModel)]="filterInput" name="ngModel">
-                  <option disabled selected>Selecciona un filtro</option>
-                  @for (content of contentForFilterCombo; track content) {
-                    <option value="{{content}}">{{content}}</option>
-                  }
-                </select>
-              }
-              <div class="ms-auto">
-                <button class="btn btn-dark" type="button" (click)="confirmFilterOwner()">Buscar</button>
-              </div>
-            </div>
-          }
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <!-- Sección de búsqueda y filtros -->
+    <div class="btn-group me-5" role="group">
+      <div class="col-sm-12 col-md-8 col-xl-8">
+        <div class="input-group" >
+              <span class="input-group-text" id="search-icon">
+                <i class="bi bi-search"></i>
+              </span>
+          <input
+            type="text"
+            class="form-control flex-grow-1"
+            id="filter-text-box"
+            (input)="onFilterTextBoxChanged($event)"
+            placeholder="Buscar..."
+          />
+          <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-funnel-fill"></i>
+          </button>
+          <ul class="dropdown-menu p-3">
+            <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(OwnerFilters.NOTHING)">Manzana</a></li>
+            <li><input type="number" class="form-control"></li>
+            <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(OwnerFilters.NOTHING)">Estado de Lote</a></li>
+            <li><select name="" id="" class="form-control"></select></li>
+            <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(OwnerFilters.NOTHING)">Tipo de Lote</a></li>
+            <li><select name="" id="" class="form-control mb-3"></select></li> <!-- Espacio añadido -->
+            <li>
+              <button type="button" class="btn btn-outline-danger me-2" (click)="changeFilterMode(filterTypes.NOTHING)">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+              <button type="button" class="btn btn-outline-primary" (click)="changeFilterMode(filterTypes.NOTHING)">
+                <i class="bi bi-search"></i>
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" class="btn-check"
-               name="btnradio" id="btnradio1"
-               autocomplete="off" (change)="changeActiveFilter(true)" checked>
-        <label class="btn btn-outline-primary" for="btnradio1">Activos</label>
-
-        <input type="radio" class="btn-check"
-               name="btnradio" id="btnradio2"
-               autocomplete="off" (change)="changeActiveFilter(false)">
-        <label class="btn btn-outline-primary" for="btnradio2">Inactivos</label>
-
-        <!--  <input type="radio" class="btn-check"
-         name="btnradio" id="btnradio3"
-         autocomplete="off" (change)="changeActiveFilter()">
-         <label class="btn btn-outline-primary" for="btnradio3">Todos</label> -->
-      </div>
     </div>
+
+    <!-- Botones de Activo, Inactivo, Todo y "+" en el mismo grupo -->
+    <div class="d-flex align-items-center">
+      <!-- Botón "+" -->
+      <button type="button" class="btn btn-outline-primary" (click)="redirectToForm()">+</button>
+
+      <!-- Línea vertical y botones de exportación -->
+      <div class="vertical-line mx-3"></div>
+      <button class="btn btn-success me-2" (click)="exportToExcel()">
+        <i class="bi bi-file-earmark-excel"></i>
+      </button>
+      <button class="btn btn-danger me-2" (click)="exportToPdf()">
+        <i class="bi bi-file-earmark-pdf"></i>
+      </button>
+    </div>
+  </div>
 
 
     <div class="table-container">
@@ -156,6 +145,5 @@
 
 
     </div>
-  </div>
 </app-main-container>
 
