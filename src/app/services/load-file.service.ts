@@ -15,7 +15,7 @@ export class LoadFileService {
 
   /**
    * Uploads files associated with an owner.
-   * 
+   *
    * @param ownerId The ID of the owner to associate the files with.
    * @param headerUserId The ID of the user making the request (header).
    * @param filesData An array of files along with their respective types.
@@ -26,13 +26,13 @@ export class LoadFileService {
     headerUserId: number,
     filesData: FileUploadData[]
   ): Observable<File[]> {
-    
+
     const formData = new FormData();
-    
+
     filesData.forEach((fileData, index) => {
       if (fileData.file instanceof File) {
         formData.append('files', this.updateFileNameAndType(fileData.file, fileData.fileName));
-        // formData.append(`type[${index}]`, fileData.fileType); 
+        // formData.append(`type[${index}]`, fileData.fileType);
       } else {
         console.error(`Expected fileData.file to be of type File, but got ${typeof fileData.file}`);
       }
