@@ -217,18 +217,22 @@
               type="number"
               class="form-control"
               id="block-number"
-              formControlName="blockNumber"[ngClass]="{'is-invalid': ownerForm.get('plotNumber')?.get('city')?.invalid && ownerForm.get('plotNumber')?.get('city')?.touched,
-            'is-valid': ownerForm.get('plotNumber')?.get('city')?.valid && ownerForm.get('plotNumber')?.get('city')?.touched}"
+              formControlName="blockNumber"
+              [ngClass]="{'is-invalid': ownerForm.get('plotForm')?.get('blockNumber')?.invalid && ownerForm.get('plotForm')?.get('blockNumber')?.touched,
+            'is-valid': ownerForm.get('plotForm')?.get('blockNumber')?.valid && ownerForm.get('plotForm')?.get('blockNumber')?.touched}"
             />
           </div>
           <div class="col-12">
             @if (ownerForm.get('plotForm.blockNumber')?.touched &&
-            ownerForm.get('plotForm.blockNumber')?.invalid) { @if
-            (ownerForm.get('plotForm.blockNumber')?.getError('required')) {
-              <small class="text-danger">Campo requerido.</small>
-            } @if (ownerForm.get('plotForm.blockNumber')?.getError('min')) {
+            ownerForm.get('plotForm.blockNumber')?.invalid) {
+              @if
+              (ownerForm.get('plotForm.blockNumber')?.getError('required')) {
+                <small class="text-danger">Campo requerido.</small>
+              }
+              @if (ownerForm.get('plotForm.blockNumber')?.getError('min')) {
               <small class="text-danger">El numero minimo es 1.</small>
-            } }
+              }
+            }
           </div>
         </div>
       </div>
@@ -244,6 +248,8 @@
               class="form-control"
               id="plot-number"
               formControlName="plotNumber"
+              [ngClass]="{'is-invalid': ownerForm.get('plotForm')?.get('plotNumber')?.invalid && ownerForm.get('plotForm')?.get('plotNumber')?.touched,
+            'is-valid': ownerForm.get('plotForm')?.get('plotNumber')?.valid && ownerForm.get('plotForm')?.get('plotNumber')?.touched}"
             />
           </div>
           <div class="col-12">
@@ -259,7 +265,11 @@
               >
             }  @if (ownerForm.get('plotForm.plotNumber')?.getError('plotExists')) { <small class="text-danger ms-2">
               No existe un lote con ese numero en esa manzana.
-            </small> }}
+            </small> }
+              @if (ownerForm.get('plotForm.plotNumber')?.getError('plotWithNoOwner')) { <small class="text-danger ms-2">
+                Ese lote tiene un dueño asociado.
+              </small> }
+            }
           </div>
         </div>
       </div>

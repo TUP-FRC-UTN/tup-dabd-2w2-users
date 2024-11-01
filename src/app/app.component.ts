@@ -5,7 +5,6 @@ import { SessionService } from './services/session.service';
 import {AsyncPipe, CommonModule} from '@angular/common';
 import {SidebarComponent} from "./components/common/sidebar/sidebar.component";
 import {NavbarComponent} from "./components/common/navbar/navbar.component";
-import {HttpClientModule} from "@angular/common/http";
 import {LoginComponent} from "./components/repositories/users/login/login.component";
 
 
@@ -48,6 +47,7 @@ export class AppComponent {
             { label: 'Cargar Usuario Inquilino', routerLink: '/user/tenant/form' },
             { label: 'Lista de Roles', routerLink: '/roles/list' },
             { label: 'Cargar Roles', routerLink: '/roles/form' },
+            { label: 'Usuarios Creados', routerLink: '/user/created/1' },
           ]
         },
         {

@@ -322,14 +322,14 @@ export class UserUserTenantFormComponent {
 
   getPlotsOfOwner() {
     // TODO: Ver como obtener el ownerId
-    this.ownerPlotService.giveAllPlotsByOwner(1, 0, 100000).subscribe(
-      response => {
-        this.actualPlotOfOwner = response.content;
-      },
-      error => {
-        this.toastService.sendError("Error recuperando sus lotes. Reinicie la pagina.")
-      }
-    )
+    // this.ownerPlotService.giveAllPlotsByOwner(1, 0, 100000).subscribe(
+    //   response => {
+    //     this.actualPlotOfOwner = response.content;
+    //   },
+    //   error => {
+    //     this.toastService.sendError("Error recuperando sus lotes. Reinicie la pagina.")
+    //   }
+    // )
   }
 
   setPlotValue(plotId:number) {

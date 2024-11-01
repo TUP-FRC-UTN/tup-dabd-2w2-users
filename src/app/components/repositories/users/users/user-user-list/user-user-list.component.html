@@ -20,17 +20,17 @@
             <i class="bi bi-funnel-fill"></i>
           </button>
           <ul class="dropdown-menu p-3">
-            <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(OwnerFilters.NOTHING)">Manzana</a></li>
+            <li><a class="dropdown-item ms-n2" >Manzana</a></li>
             <li><input type="number" class="form-control"></li>
-            <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(OwnerFilters.NOTHING)">Estado de Lote</a></li>
+            <li><a class="dropdown-item ms-n2" >Estado de Lote</a></li>
             <li><select name="" id="" class="form-control"></select></li>
-            <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(OwnerFilters.NOTHING)">Tipo de Lote</a></li>
+            <li><a class="dropdown-item ms-n2" >Tipo de Lote</a></li>
             <li><select name="" id="" class="form-control mb-3"></select></li> <!-- Espacio añadido -->
             <li>
-              <button type="button" class="btn btn-outline-danger me-2" (click)="changeFilterMode(filterTypes.NOTHING)">
+              <button type="button" class="btn btn-outline-danger me-2" >
                 <i class="bi bi-trash-fill"></i>
               </button>
-              <button type="button" class="btn btn-outline-primary" (click)="changeFilterMode(filterTypes.NOTHING)">
+              <button type="button" class="btn btn-outline-primary" >
                 <i class="bi bi-search"></i>
               </button>
             </li>
@@ -144,8 +144,8 @@
           </select>
         </div>
 
-        <div class="ms-auto">
-        </div>
+        <div class="ms-auto"></div>
+
         <ngb-pagination
         [(page)]="currentPage"
         [pageSize]="pageSize"
@@ -155,9 +155,5 @@
         [boundaryLinks]="false"
         ></ngb-pagination>
 
-        <button class="btn btn-secondary ms-3 mb-3" (click)="showInfo()">
-          <i class="bi bi-info-circle"></i>
-        </button>
-
-    </div>
+      </div>
 </app-main-container>

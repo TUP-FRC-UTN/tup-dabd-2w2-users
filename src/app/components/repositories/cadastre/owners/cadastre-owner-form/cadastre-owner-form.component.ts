@@ -20,6 +20,8 @@ import {cuitValidator} from "../../../../../validators/cuit-validator";
 import {plotForOwnerValidator} from "../../../../../validators/cadastre-plot-for-owner";
 import {Country, Provinces} from "../../../../../models/generics";
 import {mapOwnerType} from "../../../../../utils/object-helper";
+import {cadastrePlotAssociation} from "../../../../../validators/cadastre-plot-association";
+import {OwnerPlotService} from "../../../../../services/owner-plot.service";
 
 @Component({
   selector: 'app-cadastre-owner-form',
@@ -30,6 +32,8 @@ import {mapOwnerType} from "../../../../../utils/object-helper";
 })
 export class CadastreOwnerFormComponent {
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
+
+  private ownerPlotService = inject(OwnerPlotService)
 
   title: string = '';
   id: string | null = null;
@@ -55,6 +59,7 @@ export class CadastreOwnerFormComponent {
     // isActive: true,
     addresses: [],
     contacts: [],
+    plotId: undefined
   };
   plot!: Plot;
   provinceOptions!: any;
@@ -84,6 +89,7 @@ export class CadastreOwnerFormComponent {
             birthdate: response.birthdate,
             addresses: response.addresses,
             contacts: response.contacts,
+            plotId: response.plotId
           };
           this.fillFieldsToUpdate(this.owner);
         },
@@ -136,7 +142,7 @@ export class CadastreOwnerFormComponent {
       plotNumber: new FormControl(
         '',
         [Validators.required, Validators.min(1)],
-        [plotForOwnerValidator(this.plotService)]
+        [plotForOwnerValidator(this.plotService), cadastrePlotAssociation(this.ownerPlotService, this.plot?.id)]
       ),
       blockNumber: new FormControl('', [
         Validators.required,
@@ -182,6 +188,7 @@ export class CadastreOwnerFormComponent {
           if (plot) {
             this.plot = plot;
             console.log(this.owner)
+            this.owner.plotId = plot.id
             return this.ownerService.createOwner(this.owner, '1');
           } else {
             return [];

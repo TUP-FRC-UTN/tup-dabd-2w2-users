@@ -18,6 +18,8 @@ import {OwnerService} from "../../../../../services/owner.service";
 import {DocumentTypeDictionary, Owner, OwnerFilters, OwnerTypeDictionary} from "../../../../../models/owner";
 import { CadastreOwnerFilterButtonsComponent } from '../cadastre-owner-filter-buttons/cadastre-owner-filter-buttons.component';
 import { CadastreOwnerDetailComponent } from "../cadastre-owner-detail/cadastre-owner-detail.component";
+import {Subject} from "rxjs";
+import {CadastreExcelService} from "../../../../../services/cadastre-excel.service";
 
 @Component({
   selector: 'app-cadastre-owner-list',

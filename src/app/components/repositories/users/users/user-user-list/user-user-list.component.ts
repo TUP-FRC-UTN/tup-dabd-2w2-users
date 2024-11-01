@@ -137,7 +137,7 @@ export class UserUserListComponent {
     }
     //#endregion
 
-  //#region POR ACOMODAR
+     //#region POR ACOMODAR
 
   private excelService = inject(CadastreExcelService);
 
@@ -149,17 +149,17 @@ export class UserUserListComponent {
   dictionaries: Array<{ [key: string]: any }> = [];
 
   // Subject to emit filtered results
-  private filterSubject = new Subject<T[]>();
+  private filterSubject = new Subject<User[]>();
   // Observable that emits filtered owner list
   filter$ = this.filterSubject.asObservable();
 
-  private dataMapper = (item: T) => [
-    item["plotNumber"],
-    item["blockNumber"],
-    item["totalArea"],
-    item['builtArea'],
-    item["plotStatus"],
-    item["plotType"]
+  headers : string[] = ['Nombre completo', 'Nombre de usuario', 'Email', 'Activo']
+
+  private dataMapper = (item: User) => [
+    item["firstName"] + ' ' + item["lastName"],
+    item["userName"],
+    item["email"],
+    item['isActive']? 'Activo' : 'Inactivo',
   ];
 
   // Se va a usar para los nombres de los archivos.
