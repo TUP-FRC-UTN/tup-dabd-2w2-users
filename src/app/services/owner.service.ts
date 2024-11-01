@@ -11,7 +11,7 @@ import {toSnakeCase} from "../utils/object-helper";
   providedIn: 'root',
 })
 export class OwnerService {
-  private apiUrl = 'http://localhost:8282/owners';
+  private apiUrl = 'http://localhost:8004/owners';
 
   constructor(private http: HttpClient) {}
 
