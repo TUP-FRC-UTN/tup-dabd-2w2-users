@@ -7,6 +7,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {routes} from "../../../../../app.routes";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {CadastreExcelService} from "../../../../../services/cadastre-excel.service";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-users-created-by-user',
@@ -27,13 +29,14 @@ export class UsersCreatedByUserComponent {
   private activatedRoute = inject(ActivatedRoute);
   private toastService = inject(ToastService)
 
-  users!: User[]
+  userList!: User[]
   userName!: string;
+  filteredUsersList: User[] = [];
 
   //#region ATT de PAGINADO
   currentPage: number = 0
-  pageSize: number = 9
-  sizeOptions : number[] = [3, 6, 9]
+  pageSize: number = 10
+  sizeOptions : number[] = [10, 25, 50]
   lastPage: boolean | undefined
   totalItems: number = 0;
   //#endregion
@@ -49,7 +52,7 @@ export class UsersCreatedByUserComponent {
       })
       this.userService.getAllUsers(this.currentPage, this.pageSize, true).subscribe({
         next: result => {
-          this.users = result.content;
+          this.userList = result.content;
           this.totalItems = result.totalElements;
         }
       })
@@ -73,4 +76,110 @@ export class UsersCreatedByUserComponent {
     this.currentPage = 1;
     this.ngOnInit();
   }
+
+  userDetail(userId? : number) {
+    this.router.navigate([`/user/detail/${userId}`])
+  }
+
+  //#region POR ACOMODAR
+
+  private excelService = inject(CadastreExcelService);
+
+  LIMIT_32BITS_MAX = 2147483647
+
+  itemsList!: User[];
+  formPath: string = "";
+  objectName : string = ""
+  dictionaries: Array<{ [key: string]: any }> = [];
+
+  // Subject to emit filtered results
+  private filterSubject = new Subject<User[]>();
+  // Observable that emits filtered owner list
+  filter$ = this.filterSubject.asObservable();
+
+  headers : string[] = ['Nombre completo', 'Nombre de usuario', 'Email', 'Activo']
+
+  private dataMapper = (item: User) => [
+    item["firstName"] + ' ' + item["lastName"],
+    item["userName"],
+    item["email"],
+    item['isActive']? 'Activo' : 'Inactivo',
+  ];
+
+  // Se va a usar para los nombres de los archivos.
+  getActualDayFormat() {
+    const today = new Date();
+
+    const formattedDate = today.toISOString().split('T')[0];
+
+    return formattedDate;
+  }
+
+  /**
+   * Export the HTML table to a PDF file.
+   * Calls the `exportTableToPdf` method from the `CadastreExcelService`.
+   */
+  exportToPdf() {
+    this.userService.getAllUsers(0, this.LIMIT_32BITS_MAX).subscribe(
+      response => {
+        this.excelService.exportListToPdf(response.content, `${this.getActualDayFormat()}_${this.objectName}`, [], this.dataMapper);
+      },
+      error => {
+        console.log("Error retrieved all, on export component.")
+
+      }
+    )
+  }
+
+  exportToExcel() {
+    this.userService.getAllUsers(0, this.LIMIT_32BITS_MAX).subscribe(
+      response => {
+        this.excelService.exportListToExcel(response.content, `${this.getActualDayFormat()}_${this.objectName}`);
+      },
+      error => {
+        console.log("Error retrieved all, on export component.")
+      }
+    )
+  }
+
+  onFilterTextBoxChanged(event: Event) {
+    const target = event.target as HTMLInputElement;
+
+    if (target.value?.length <= 2) {
+      this.filterSubject.next(this.itemsList);
+    } else {
+      const filterValue = target.value.toLowerCase();
+
+      const filteredList = this.itemsList.filter(item => {
+        return Object.values(item).some(prop => {
+          const propString = prop ? prop.toString().toLowerCase() : '';
+
+          const translations = this.dictionaries && this.dictionaries.length
+            ? this.dictionaries.map(dict => this.translateDictionary(propString, dict)).filter(Boolean)
+            : [];
+
+          return propString.includes(filterValue) || translations.some(trans => trans?.toLowerCase().includes(filterValue));
+        });
+      });
+
+      this.filterSubject.next(filteredList.length > 0 ? filteredList : []);
+    }
+  }
+
+  translateDictionary(value: any, dictionary?: { [key: string]: any }) {
+    if (value !== undefined && value !== null && dictionary) {
+      for (const key in dictionary) {
+        if (dictionary[key].toString().toLowerCase() === value.toLowerCase()) {
+          return key;
+        }
+      }
+    }
+    return;
+  }
+
+  redirectToForm() {
+    this.router.navigate([this.formPath]);
+  }
+
+  //#endregion
 }

@@ -4,14 +4,13 @@ import {MainLayoutComponent, NavbarItem, ToastsContainer} from 'ngx-dabd-grupo01
 import { SessionService } from './services/session.service';
 import {AsyncPipe, CommonModule} from '@angular/common';
 import {SidebarComponent} from "./components/common/sidebar/sidebar.component";
-import {NavbarComponent} from "./components/common/navbar/navbar.component";
 import {LoginComponent} from "./components/repositories/users/login/login.component";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToastsContainer, SidebarComponent, NavbarComponent,
+  imports: [RouterOutlet, ToastsContainer, SidebarComponent,
     RouterOutlet, AsyncPipe, CommonModule, RouterLink, LoginComponent, MainLayoutComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
