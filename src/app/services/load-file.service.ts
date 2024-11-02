@@ -8,8 +8,8 @@ import { FileUploadData, Document, FileTypeMap } from '../models/file';
 })
 export class LoadFileService {
 
-  private ownerUploadUrl = 'http://localhost:8282/owners';
-  private fileUploadUrl = 'http://localhost:8282/files';
+  private ownerUploadUrl = 'http://localhost:8004/owners';
+  private plotUploadUrl = 'http://localhost:8004/files';
 
   constructor(private http: HttpClient) { }
 
@@ -119,7 +119,7 @@ export class LoadFileService {
     const headers = new HttpHeaders({
       'x-user-id': headerUserId.toString()
     });
-    return this.http.post<Document[]>(`${this.fileUploadUrl}/${plotId}/files`, formDataPlot, { headers });
+    return this.http.post<Document[]>(`${this.plotUploadUrl}/${plotId}/files`, formDataPlot, { headers });
   }
 
   updateFileNameAndType(file: File, newName: string): File {

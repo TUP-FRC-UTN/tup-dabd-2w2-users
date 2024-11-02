@@ -37,7 +37,7 @@ export interface FileTypeMap {
 export interface FileWithTypes {
   id?: string,
   file: File,
-  type: BatchFileType
+  type: 'PURCHASE_SALE' | 'ID_DOCUMENT_BACK' | 'ID_DOCUMENT_FRONT';
 }
 
 export const FileTypeDictionary: { [key: string]: string } = {
