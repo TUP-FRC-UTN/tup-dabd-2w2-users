@@ -1,5 +1,11 @@
 import {Component, ElementRef, inject, ViewChild} from '@angular/core';
-import {ConfirmAlertComponent, MainContainerComponent, ToastService} from "ngx-dabd-grupo01";
+import {
+  ConfirmAlertComponent,
+  Filter,
+  FilterConfigBuilder,
+  MainContainerComponent, TableFiltersComponent,
+  ToastService
+} from "ngx-dabd-grupo01";
 import {NgbModal, NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {
@@ -8,13 +14,17 @@ import {
 import {Plot, PlotFilters, PlotStatusDictionary, PlotTypeDictionary} from "../../../../../models/plot";
 import {Router} from "@angular/router";
 import {PlotService} from "../../../../../services/plot.service";
+import {CadastreExcelService} from "../../../../../services/cadastre-excel.service";
+import {Subject} from "rxjs";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-cadastre-plot-list',
   standalone: true,
-  imports: [CadastrePlotFilterButtonsComponent, FormsModule, NgbPagination, MainContainerComponent],
+  imports: [CadastrePlotFilterButtonsComponent, FormsModule, NgbPagination, MainContainerComponent, TableFiltersComponent],
   templateUrl: './cadastre-plot-list.component.html',
-  styleUrl: './cadastre-plot-list.component.scss'
+  styleUrl: './cadastre-plot-list.component.scss',
+  providers: [DatePipe]
 })
 export class CadastrePlotListComponent {
 
@@ -23,6 +33,7 @@ export class CadastrePlotListComponent {
   private plotService = inject(PlotService)
   private toastService = inject(ToastService)
   private modalService = inject(NgbModal)
+  private excelService = inject(CadastreExcelService);
   //#endregion
 
   //#region ATT de PAGINADO
@@ -46,12 +57,57 @@ export class CadastrePlotListComponent {
   actualFilter : string | undefined = PlotFilters.NOTHING;
   filterTypes = PlotFilters;
   filterInput : string = "";
+
+  filterConfig: Filter[] = new FilterConfigBuilder()
+
+    .numberFilter('Nro. Manzana', 'plotNumber', 'Seleccione una Manzana')
+    .selectFilter('Tipo', 'plotType', 'Seleccione un tipo', [
+      {value: 'COMMERCIAL', label: 'Comercial'},
+      {value: 'PRIVATE', label: 'Privado'},
+      {value: 'COMMUNAL', label: 'Comunal'},
+    ])
+    .selectFilter('Estado', 'plotStatus', 'Seleccione un estado', [
+      {value: 'CREATED', label: 'Creado'},
+      {value: 'FOR_SALE', label: 'En Venta'},
+      {value: 'SALE', label: 'Venta'},
+      {value: 'SALE_PROCESS', label: 'Proceso de Venta'},
+      {value: 'CONSTRUCTION_PROCESS', label: 'En construcciones'},
+      {value: 'EMPTY', label: 'Vacio'},
+    ])
+    .radioFilter('Activo', 'isActive', [
+      {value: 'true', label: 'Activo'},
+      {value: 'false', label: 'Inactivo'},
+      {value: 'undefined', label: 'Todo'},
+    ])
+    .build()
+
+  //#endregion
+
+  //#region ATT FILTER BUTTONS
+  itemsList!: Plot[];
+  formPath: string = "/plot/form";
+  objectName : string = ""
+  LIMIT_32BITS_MAX = 2147483647
+  filterSubject = new Subject<Plot[]>();
+  filter$ = this.filterSubject.asObservable();
+
+  headers : string[] = ['Nro. de Manzana', 'Nro. de Lote', 'Area Total', 'Area Construida', 'Tipo de Lote', 'Estado del Lote', 'Activo']
+
+  dataMapper = (item: Plot) => [
+    item["blockNumber"],
+    item["plotNumber"],
+    item["totalArea"],
+    item['builtArea'],
+    this.translateDictionary(item["plotType"], this.dictionaries[0]),
+    this.translateDictionary(item["plotStatus"], this.dictionaries[1]),
+    item['isActive']? 'Activo' : 'Inactivo',
+  ];
   //#endregion
 
   //#region ATT de DICCIONARIOS
   plotTypeDictionary = PlotTypeDictionary;
   plotStatusDictionary = PlotStatusDictionary;
-  plotDictionaries = [this.plotTypeDictionary, this.plotStatusDictionary]
+  dictionaries: Array<{ [key: string]: any }> = [this.plotStatusDictionary, this.plotTypeDictionary];
   //#endregion
 
   //#region NgOnInit | BUSCAR
@@ -171,6 +227,10 @@ export class CadastrePlotListComponent {
     }
   }
 
+  cleanAllFilters() {
+
+  }
+
   confirmFilterPlot() {
     switch (this.actualFilter) {
       case "NOTHING":
@@ -230,6 +290,10 @@ export class CadastrePlotListComponent {
   plotDetail(plotId : number) {
     this.router.navigate([`/plot/detail/${plotId}`])
   }
+
+  redirectToForm() {
+    this.router.navigate([this.formPath]);
+  }
   //#endregion
 
   //#region USO DE DICCIONARIOS
@@ -285,4 +349,83 @@ export class CadastrePlotListComponent {
     // TODO: En un futuro agregar un modal que mostrara informacion de cada componente
   }
   //#endregion
+
+  //#region METODOS FILTER BUTTONS
+  onFilterTextBoxChanged(event: Event) {
+    const target = event.target as HTMLInputElement;
+
+    if (target.value?.length <= 2) {
+      this.filterSubject.next(this.itemsList);
+    } else {
+      const filterValue = target.value.toLowerCase();
+
+      const filteredList = this.itemsList.filter(item => {
+        return Object.values(item).some(prop => {
+          const propString = prop ? prop.toString().toLowerCase() : '';
+
+          const translations = this.dictionaries && this.dictionaries.length
+            ? this.dictionaries.map(dict => this.translateDictionary(propString, dict)).filter(Boolean)
+            : [];
+
+          return propString.includes(filterValue) || translations.some(trans => trans?.toLowerCase().includes(filterValue));
+        });
+      });
+
+      this.filterSubject.next(filteredList.length > 0 ? filteredList : []);
+    }
+  }
+
+  /**
+   * Translates a value using the provided dictionary.
+   *
+   * @param value - The value to translate.
+   * @param dictionary - The dictionary used for translation.
+   * @returns The key that matches the value in the dictionary, or undefined if no match is found.
+   */
+  translateDictionary(value: any, dictionary?: { [key: string]: any }) {
+    if (value !== undefined && value !== null && dictionary) {
+      for (const key in dictionary) {
+        if (dictionary[key].toString().toLowerCase() === value.toLowerCase()) {
+          return key;
+        }
+      }
+    }
+    return;
+  }
+  //#endregion
+
+  //#region EXPORT FUNCTIONS
+  exportToPdf() {
+    let actualPageSize = this.pageSize;
+
+    this.plotService.getAllPlots(0, this.LIMIT_32BITS_MAX, true).subscribe(
+      response => {
+        this.excelService.exportListToPdf(response.content, `${this.getActualDayFormat()}_${this.objectName}`, this.headers, this.dataMapper);
+      },
+      error => {
+        console.log("Error retrieved all, on export component.")
+      }
+    )
+  }
+
+  exportToExcel() {
+    this.plotService.getAllPlots(0, this.LIMIT_32BITS_MAX, true).subscribe(
+      response => {
+        this.excelService.exportListToExcel(response.content, `${this.getActualDayFormat()}_${this.objectName}`);
+      },
+      error => {
+        console.log("Error retrieved all, on export component.")
+      }
+    )
+  }
+
+  getActualDayFormat() {
+    const today = new Date();
+
+    return today.toISOString().split('T')[0];
+  }
+  //#endregion
+  filterChange($event: Record<string, any>) {
+    console.log($event)
+  }
 }

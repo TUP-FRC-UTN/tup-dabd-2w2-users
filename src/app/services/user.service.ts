@@ -12,15 +12,14 @@ import {toCamelCase} from "../utils/object-helper";
 export class UserService {
   private http = inject(HttpClient)
 
+  host: string = "http://localhost:8015/users"
+
   validateEmail(email: string): Observable<boolean> {
     const params = new HttpParams()
     .set('email', email.toString())
 
     return this.http.get<boolean>(this.host + `/validEmail`, {params});
   }
-
-  host: string = "http://localhost:8283/users"
-
 
   updateUser(id: number, user: User, userId: number): Observable<User> {
     const headers = new HttpHeaders({
@@ -84,19 +83,22 @@ export class UserService {
    * @returns Observable con los datos del usuario.
    */
   getUserById2(id: number): Observable<User> {
-    return this.http.get<User>(`${this.host}/users/${id}`)
+    return this.http.get<User>(`${this.host}/${id}`)
       .pipe(
         map(response => response),
         catchError(this.handleError)
       );
   }
 
-  /**
-   * Manejo de errores en solicitudes HTTP.
-   *
-   * @param error El error HTTP que ocurrió.
-   * @returns Observable que lanza un error.
-   */
+  getUsersCreatedBy(id: string) {
+    return this.http.get<User[]>(`${this.host}/${id}`).pipe(
+      map((data: any) => {
+        return toCamelCase(data)
+      })
+    )
+  }
+
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       console.error('An error occurred:', error.error);
