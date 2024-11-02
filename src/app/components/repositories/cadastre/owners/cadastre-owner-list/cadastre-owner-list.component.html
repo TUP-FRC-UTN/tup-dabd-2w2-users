@@ -15,25 +15,7 @@
             (input)="onFilterTextBoxChanged($event)"
             placeholder="Buscar..."
           />
-          <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-funnel-fill"></i>
-          </button>
-          <ul class="dropdown-menu p-3">
-            <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(OwnerFilters.NOTHING)">Manzana</a></li>
-            <li><input type="number" class="form-control"></li>
-            <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(OwnerFilters.NOTHING)">Estado de Lote</a></li>
-            <li><select name="" id="" class="form-control"></select></li>
-            <li><a class="dropdown-item ms-n2" (click)="changeFilterMode(OwnerFilters.NOTHING)">Tipo de Lote</a></li>
-            <li><select name="" id="" class="form-control mb-3"></select></li> <!-- Espacio añadido -->
-            <li>
-              <button type="button" class="btn btn-outline-danger me-2" (click)="changeFilterMode(filterTypes.NOTHING)">
-                <i class="bi bi-trash-fill"></i>
-              </button>
-              <button type="button" class="btn btn-outline-primary" (click)="changeFilterMode(filterTypes.NOTHING)">
-                <i class="bi bi-search"></i>
-              </button>
-            </li>
-          </ul>
+          <app-table-filters [filters]="filterConfig" (filterValueChange)="filterChange($event)"></app-table-filters>
         </div>
       </div>
     </div>

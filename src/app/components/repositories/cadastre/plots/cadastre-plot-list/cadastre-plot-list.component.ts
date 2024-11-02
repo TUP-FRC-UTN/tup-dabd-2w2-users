@@ -1,5 +1,11 @@
 import {Component, ElementRef, inject, ViewChild} from '@angular/core';
-import {ConfirmAlertComponent, MainContainerComponent, ToastService} from "ngx-dabd-grupo01";
+import {
+  ConfirmAlertComponent,
+  Filter,
+  FilterConfigBuilder,
+  MainContainerComponent, TableFiltersComponent,
+  ToastService
+} from "ngx-dabd-grupo01";
 import {NgbModal, NgbPagination} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {
@@ -10,13 +16,15 @@ import {Router} from "@angular/router";
 import {PlotService} from "../../../../../services/plot.service";
 import {CadastreExcelService} from "../../../../../services/cadastre-excel.service";
 import {Subject} from "rxjs";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-cadastre-plot-list',
   standalone: true,
-  imports: [CadastrePlotFilterButtonsComponent, FormsModule, NgbPagination, MainContainerComponent],
+  imports: [CadastrePlotFilterButtonsComponent, FormsModule, NgbPagination, MainContainerComponent, TableFiltersComponent],
   templateUrl: './cadastre-plot-list.component.html',
-  styleUrl: './cadastre-plot-list.component.scss'
+  styleUrl: './cadastre-plot-list.component.scss',
+  providers: [DatePipe]
 })
 export class CadastrePlotListComponent {
 
@@ -49,6 +57,29 @@ export class CadastrePlotListComponent {
   actualFilter : string | undefined = PlotFilters.NOTHING;
   filterTypes = PlotFilters;
   filterInput : string = "";
+
+  filterConfig: Filter[] = new FilterConfigBuilder()
+    .numberFilter('Nro. Manzana', 'plotNumber', 'Seleccione una Manzana')
+    .selectFilter('Tipo', 'plotType', 'Seleccione un tipo', [
+      {value: 'COMMERCIAL', label: 'Comercial'},
+      {value: 'PRIVATE', label: 'Privado'},
+      {value: 'COMMUNAL', label: 'Comunal'},
+    ])
+    .selectFilter('Estado', 'plotStatus', 'Seleccione un estado', [
+      {value: 'CREATED', label: 'Creado'},
+      {value: 'FOR_SALE', label: 'En Venta'},
+      {value: 'SALE', label: 'Venta'},
+      {value: 'SALE_PROCESS', label: 'Proceso de Venta'},
+      {value: 'CONSTRUCTION_PROCESS', label: 'En construcciones'},
+      {value: 'EMPTY', label: 'Vacio'},
+    ])
+    .radioFilter('Activo', 'isActive', [
+      {value: 'true', label: 'Activo'},
+      {value: 'false', label: 'Inactivo'},
+      {value: 'undefined', label: 'Todo'},
+    ])
+    .build()
+
   //#endregion
 
   //#region ATT FILTER BUTTONS
@@ -393,4 +424,7 @@ export class CadastrePlotListComponent {
     return today.toISOString().split('T')[0];
   }
   //#endregion
+  filterChange($event: Record<string, any>) {
+    console.log($event)
+  }
 }

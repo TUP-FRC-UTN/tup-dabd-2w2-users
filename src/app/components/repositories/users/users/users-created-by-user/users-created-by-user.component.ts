@@ -1,8 +1,14 @@
 import {Component, inject} from '@angular/core';
-import {MainContainerComponent, ToastService} from "ngx-dabd-grupo01";
+import {
+  Filter,
+  FilterConfigBuilder,
+  MainContainerComponent,
+  TableFiltersComponent,
+  ToastService
+} from "ngx-dabd-grupo01";
 import {UserService} from "../../../../../services/user.service";
 import {User} from "../../../../../models/user";
-import {NgClass} from "@angular/common";
+import {DatePipe, NgClass} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {routes} from "../../../../../app.routes";
 import {NgbPagination} from "@ng-bootstrap/ng-bootstrap";
@@ -19,7 +25,11 @@ import {Subject} from "rxjs";
     NgbPagination,
     ReactiveFormsModule,
     FormsModule,
+    TableFiltersComponent,
+    DatePipe
+
   ],
+  providers: [DatePipe],
   templateUrl: './users-created-by-user.component.html',
   styleUrl: './users-created-by-user.component.css'
 })
@@ -28,6 +38,37 @@ export class UsersCreatedByUserComponent {
   private userService = inject(UserService)
   private activatedRoute = inject(ActivatedRoute);
   private toastService = inject(ToastService)
+
+  //TODO: Cambiar filtro porfavor
+  filterConfig: Filter[] = new FilterConfigBuilder()
+    .numberFilter('Nro. Manzana', 'plotNumber', 'Seleccione una Manzana')
+    .selectFilter('Tipo', 'plotType', 'Seleccione un tipo', [
+      {value: 'COMMERCIAL', label: 'Comercial'},
+      {value: 'PRIVATE', label: 'Privado'},
+      {value: 'COMMUNAL', label: 'Comunal'},
+    ])
+    .selectFilter('Estado', 'plotStatus', 'Seleccione un estado', [
+      {value: 'CREATED', label: 'Creado'},
+      {value: 'FOR_SALE', label: 'En Venta'},
+      {value: 'SALE', label: 'Venta'},
+      {value: 'SALE_PROCESS', label: 'Proceso de Venta'},
+      {value: 'CONSTRUCTION_PROCESS', label: 'En construcciones'},
+      {value: 'EMPTY', label: 'Vacio'},
+    ])
+    .radioFilter('Activo', 'isActive', [
+      {value: 'true', label: 'Activo'},
+      {value: 'false', label: 'Inactivo'},
+      {value: 'undefined', label: 'Todo'},
+    ])
+    .build()
+/*
+    "Creado": "CREATED",
+    "En Venta": "FOR_SALE",
+    "Venta": "SALE",
+    "Proceso de Venta": "SALE_PROCESS",
+    "En construcciones": "CONSTRUCTION_PROCESS",
+    "Vacio": "EMPTY"
+ */
 
   userList!: User[]
   userName!: string;
@@ -53,6 +94,7 @@ export class UsersCreatedByUserComponent {
       this.userService.getAllUsers(this.currentPage, this.pageSize, true).subscribe({
         next: result => {
           this.userList = result.content;
+          this.filteredUsersList = this.userList
           this.totalItems = result.totalElements;
         }
       })
@@ -182,4 +224,7 @@ export class UsersCreatedByUserComponent {
   }
 
   //#endregion
+  filterChange($event: Record<string, any>) {
+    console.log($event)
+  }
 }

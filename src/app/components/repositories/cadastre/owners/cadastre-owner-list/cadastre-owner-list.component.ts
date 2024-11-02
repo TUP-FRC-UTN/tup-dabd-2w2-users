@@ -6,12 +6,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   ConfirmAlertComponent,
   ToastService,
-  MainContainerComponent,
+  MainContainerComponent, Filter, FilterConfigBuilder, TableFiltersComponent,
 } from 'ngx-dabd-grupo01';
 import { NgbModal, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import {OwnerService} from "../../../../../services/owner.service";
@@ -31,14 +31,14 @@ import {CadastreExcelService} from "../../../../../services/cadastre-excel.servi
     NgbPagination,
     ConfirmAlertComponent,
     CadastreOwnerDetailComponent,
-    CadastreOwnerFilterButtonsComponent
-],
+    CadastreOwnerFilterButtonsComponent,
+    TableFiltersComponent
+  ],
+  providers: [DatePipe],
   templateUrl: './cadastre-owner-list.component.html',
   styleUrl: './cadastre-owner-list.component.css'
 })
 export class CadastreOwnerListComponent {
-
-  constructor() {}
 
   private router = inject(Router);
   protected ownerService = inject(OwnerService);
@@ -61,6 +61,27 @@ export class CadastreOwnerListComponent {
   ownerLastName: string | undefined;
   ownerId: number | undefined;
   selectedDocType: string = '';
+  filterConfig: Filter[] = new FilterConfigBuilder()
+    .numberFilter('Nro. Manzana', 'plotNumber', 'Seleccione una Manzana')
+    .selectFilter('Tipo', 'plotType', 'Seleccione un tipo', [
+      {value: 'COMMERCIAL', label: 'Comercial'},
+      {value: 'PRIVATE', label: 'Privado'},
+      {value: 'COMMUNAL', label: 'Comunal'},
+    ])
+    .selectFilter('Estado', 'plotStatus', 'Seleccione un estado', [
+      {value: 'CREATED', label: 'Creado'},
+      {value: 'FOR_SALE', label: 'En Venta'},
+      {value: 'SALE', label: 'Venta'},
+      {value: 'SALE_PROCESS', label: 'Proceso de Venta'},
+      {value: 'CONSTRUCTION_PROCESS', label: 'En construcciones'},
+      {value: 'EMPTY', label: 'Vacio'},
+    ])
+    .radioFilter('Activo', 'isActive', [
+      {value: 'true', label: 'Activo'},
+      {value: 'false', label: 'Inactivo'},
+      {value: 'undefined', label: 'Todo'},
+    ])
+    .build()
 
   applyFilterWithNumber: boolean = false;
   applyFilterWithCombo: boolean = false;
@@ -282,7 +303,26 @@ export class CadastreOwnerListComponent {
   // Inject the Excel service for export functionality
   private excelService = inject(CadastreExcelService);
 
-
+  filterConfig: Filter[] = new FilterConfigBuilder()
+    .selectFilter('Tipo Documento', 'documentType', 'Seleccione un tipo de documento', [
+      {value: 'COMMERCIAL', label: 'Comercial'},
+      {value: 'PRIVATE', label: 'Privado'},
+      {value: 'COMMUNAL', label: 'Comunal'},
+    ])
+    .selectFilter('Estado', 'plotStatus', 'Seleccione un estado', [
+      {value: 'CREATED', label: 'Creado'},
+      {value: 'FOR_SALE', label: 'En Venta'},
+      {value: 'SALE', label: 'Venta'},
+      {value: 'SALE_PROCESS', label: 'Proceso de Venta'},
+      {value: 'CONSTRUCTION_PROCESS', label: 'En construcciones'},
+      {value: 'EMPTY', label: 'Vacio'},
+    ])
+    .radioFilter('Activo', 'isActive', [
+      {value: 'true', label: 'Activo'},
+      {value: 'false', label: 'Inactivo'},
+      {value: 'undefined', label: 'Todo'},
+    ])
+    .build()
 
   // Input to receive the list of owners from the parent component
   ownersList!: Owner[];
@@ -398,4 +438,8 @@ export class CadastreOwnerListComponent {
 
   //#endregion
   protected readonly OwnerFilters = OwnerFilters;
+
+  filterChange($event: Record<string, any>) {
+
+  }
 }
