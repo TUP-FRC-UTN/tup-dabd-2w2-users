@@ -43,35 +43,49 @@
       <!-- Tabla de archivos para validar -->
       <div class="table-container">
         <table class="table table-striped fixed-table" style="border: 1px solid rgba(0, 0, 0, 0.150); border-collapse: collapse;">
-          <thead>
-            <tr>
-              <th scope="col">Nombre y Apellido</th>
-              <th scope="col">Documento</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for(owner of (filteredOwnersList.length ? filteredOwnersList : owners); track owner) {
-              <tr>
-                <td>{{ owner.firstName + " " + owner.lastName }}</td>
-                <td>{{ translateTable(owner.documentType, documentTypeDictionary) }}  {{ owner.documentNumber }}</td>
-                <td>{{ translateTable(owner.kycStatus, ownerStatusDictionary) }}</td>
-                <td>
-                  <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item btn btn-info" (click)="ownerFilesDetail(owner.id)">Ver Detalle</a></li>
-                      <li><a class="dropdown-item btn btn-success" (click)="approbeOwnerFiles(owner.id)">Aprobar</a></li>
-                      <li><a class="dropdown-item btn btn-danger" (click)="rejectOwnerFiles(owner.id)">Rechazar</a></li>
-                    </ul>
+          
+          @if (filteredOwnersList.length === 0 || owners.length === 0) {
+            <thead>
+              <td colspan="7"> 
+                <div class="text-center p-2">
+                  <div class="alert alert-secondary text-center" role="alert">
+                    No se encontraron propietarios
                   </div>
-                </td>
+                </div>
+              </td>
+            </thead>
+          } @else {
+            
+            <thead>
+              <tr>
+                <th scope="col">Nombre y Apellido</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
               </tr>
-            }
-          </tbody>
+            </thead>
+            <tbody>
+              @for(owner of (filteredOwnersList.length ? filteredOwnersList : owners); track owner) {
+                <tr>
+                  <td>{{ owner.firstName + " " + owner.lastName }}</td>
+                  <td>{{ translateTable(owner.documentType, documentTypeDictionary) }}  {{ owner.documentNumber }}</td>
+                  <td>{{ translateTable(owner.kycStatus, ownerStatusDictionary) }}</td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item btn btn-info" (click)="ownerFilesDetail(owner.id)">Ver Detalle</a></li>
+                        <li><a class="dropdown-item btn btn-success" (click)="approbeOwnerFiles(owner.id)">Aprobar</a></li>
+                        <li><a class="dropdown-item btn btn-danger" (click)="rejectOwnerFiles(owner.id)">Rechazar</a></li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          }
         </table>
       </div>
       
