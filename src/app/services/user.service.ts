@@ -90,12 +90,15 @@ export class UserService {
       );
   }
 
-  /**
-   * Manejo de errores en solicitudes HTTP.
-   *
-   * @param error El error HTTP que ocurrió.
-   * @returns Observable que lanza un error.
-   */
+  getUsersCreatedBy(id: string) {
+    return this.http.get<User[]>(`${this.host}/${id}`).pipe(
+      map((data: any) => {
+        return toCamelCase(data)
+      })
+    )
+  }
+
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       console.error('An error occurred:', error.error);

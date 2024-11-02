@@ -1,10 +1,8 @@
 @if (isAuthenticated$ | async ) {
   <!-- Navbar -->
-  <app-navbar></app-navbar>
 
+  <app-main-layout [navbarMenu]="navbarMenu"></app-main-layout>
   <div class="main-container d-flex">
-    <!-- Sidebar -->
-    <app-sidebar></app-sidebar>
 
     <!-- Contenido principal -->
     <div class="content-container flex-grow-1 pt-5">
