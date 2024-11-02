@@ -124,6 +124,8 @@ export class FilesFormComponent implements OnInit {
 
   onSubmit() {
     console.log("Archivos para subir. onUpload() ", this.files);
+    console.log("Archivos para subir del Owner. onUpload() ", this.ownerFiles);
+    console.log("Archivos para subir del Plot. onUpload() ", this.plotFiles);
 
     
 

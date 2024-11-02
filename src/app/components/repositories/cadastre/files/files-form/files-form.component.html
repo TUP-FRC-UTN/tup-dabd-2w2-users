@@ -206,7 +206,7 @@
             class="form-control"
             formControlName="plotFile"
             accept="image/*,.pdf"
-            (change)="onFileSelectedPlot($event, 'dniBack')"
+            (change)="onFileSelectedPlot($event, 'plotFile')"
           />
           @if(fileInput.get('plotFile')?.invalid &&
           fileInput.get('plotFile')?.touched){
