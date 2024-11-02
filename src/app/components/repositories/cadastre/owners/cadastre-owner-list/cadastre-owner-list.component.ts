@@ -303,26 +303,7 @@ export class CadastreOwnerListComponent {
   // Inject the Excel service for export functionality
   private excelService = inject(CadastreExcelService);
 
-  filterConfig: Filter[] = new FilterConfigBuilder()
-    .selectFilter('Tipo Documento', 'documentType', 'Seleccione un tipo de documento', [
-      {value: 'COMMERCIAL', label: 'Comercial'},
-      {value: 'PRIVATE', label: 'Privado'},
-      {value: 'COMMUNAL', label: 'Comunal'},
-    ])
-    .selectFilter('Estado', 'plotStatus', 'Seleccione un estado', [
-      {value: 'CREATED', label: 'Creado'},
-      {value: 'FOR_SALE', label: 'En Venta'},
-      {value: 'SALE', label: 'Venta'},
-      {value: 'SALE_PROCESS', label: 'Proceso de Venta'},
-      {value: 'CONSTRUCTION_PROCESS', label: 'En construcciones'},
-      {value: 'EMPTY', label: 'Vacio'},
-    ])
-    .radioFilter('Activo', 'isActive', [
-      {value: 'true', label: 'Activo'},
-      {value: 'false', label: 'Inactivo'},
-      {value: 'undefined', label: 'Todo'},
-    ])
-    .build()
+
 
   // Input to receive the list of owners from the parent component
   ownersList!: Owner[];

@@ -59,6 +59,7 @@ export class CadastrePlotListComponent {
   filterInput : string = "";
 
   filterConfig: Filter[] = new FilterConfigBuilder()
+
     .numberFilter('Nro. Manzana', 'plotNumber', 'Seleccione una Manzana')
     .selectFilter('Tipo', 'plotType', 'Seleccione un tipo', [
       {value: 'COMMERCIAL', label: 'Comercial'},
