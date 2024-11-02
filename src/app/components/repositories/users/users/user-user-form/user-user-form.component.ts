@@ -54,9 +54,9 @@ export class UserUserFormComponent {
       email: new FormControl('', {
         validators: [Validators.required, Validators.email, Validators.maxLength(50)],
       }),
-      firstName: new FormControl('', [Validators.required, Validators.maxLength(50)]), // Cambiado
-      lastName: new FormControl('', [Validators.required, Validators.maxLength(50)]), // Cambiado
-      userName: new FormControl('', [Validators.required, Validators.maxLength(50)]), // Cambiado
+      firstName: new FormControl('', [Validators.required, Validators.maxLength(50)]), 
+      lastName: new FormControl('', [Validators.required, Validators.maxLength(50)]), 
+      userName: new FormControl('', [Validators.required, Validators.maxLength(50)]), 
 
       rolesForm: new FormGroup({
         rol: new FormControl('', []),
