@@ -144,6 +144,10 @@ export class UserUserFormComponent {
               userName: this.user.userName,
             });
 
+            if (response.plotId !== undefined) {
+              this.setPlotValue(response.plotId);
+            }
+
             if (this.user.addresses) {
               this.addresses = [...this.user.addresses];
               if (this.addresses.length > 0) {
@@ -331,6 +335,17 @@ export class UserUserFormComponent {
             },
           });
       }
+    }
+
+    setPlotValue(plotId:number) {
+      const plotFormGroup = this.userForm.get('plotForm') as FormGroup;
+      this.plotService.getPlotById(plotId).subscribe(
+        response => {
+            plotFormGroup.patchValue({
+              plotNumber: response.plotNumber,
+              blockNumber: response.blockNumber,
+            })
+        })
     }
     //#endregion
 

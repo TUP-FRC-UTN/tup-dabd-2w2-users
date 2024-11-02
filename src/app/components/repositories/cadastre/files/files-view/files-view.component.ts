@@ -43,6 +43,9 @@ export class FilesViewComponent {
 
   ngOnInit() {
     this.getAllOwners();
+    console.log(this.owners.length);
+    console.log(this.filteredOwnersList.length);
+    
   }
 
   mapKYCStatus(type: string){

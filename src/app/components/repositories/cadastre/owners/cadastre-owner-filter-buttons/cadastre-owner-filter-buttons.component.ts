@@ -13,7 +13,7 @@ import {Owner} from "../../../../../models/owner";
   templateUrl: './cadastre-owner-filter-buttons.component.html',
   styleUrl: './cadastre-owner-filter-buttons.component.css'
 })
-export class CadastreOwnerFilterButtonsComponent {
+export class CadastreOwnerFilterButtonsComponent<T extends Record<string, any>> {
 
 
   private router = inject(Router);
@@ -23,6 +23,17 @@ export class CadastreOwnerFilterButtonsComponent {
 
   // inject OwnerService
   private ownerService = inject(OwnerService);
+
+  LIMIT_32BITS_MAX = 2147483647
+
+  headers: string[] = ['Nombre', 'Apellido', 'Documento', 'Tipo propietario'];
+
+  private dataMapper = (item: T) => [
+    item['firstName'] + (item['secondName'] ? ' ' + item['secondName'] : ''),
+    item['lastName'],
+    this.translateDictionary(item['documentType'], this.dictionaries[0]) + ': ' + item['documentNumber'],
+    this.translateDictionary(item['ownerType'], this.dictionaries[1])
+  ]
 
 
   // Input to receive the HTML table from the parent
@@ -64,7 +75,14 @@ export class CadastreOwnerFilterButtonsComponent {
    * Calls the `exportTableToPdf` method from the `CadastreExcelService`.
    */
   exportToPdf(){
-    this.excelService.exportTableToPdf(this.tableName, 'owners_table' + this.getActualDayFormat());
+    this.ownerService.getOwners(0, this.LIMIT_32BITS_MAX, true).subscribe({
+      next: (data) => {
+        this.excelService.exportListToPdf(data.content, `${this.getActualDayFormat()}_${this.objectName}`, this.headers, this.dataMapper);
+      },
+      error: (error) => {
+        console.log(error);        
+      }
+    });
   }
 
   /**
@@ -72,7 +90,14 @@ export class CadastreOwnerFilterButtonsComponent {
    * Calls the `exportTableToExcel` method from the `CadastreExcelService`.
    */
   exportToExcel(){
-    this.excelService.exportTableToExcel(this.tableName, 'owners_table' + this.getActualDayFormat());
+    this.ownerService.getOwners(0, this.LIMIT_32BITS_MAX, true).subscribe({
+      next: (data) => {
+        this.excelService.exportListToExcel(data.content, `${this.getActualDayFormat()}_${this.objectName}`);
+      },
+      error: (error) => {
+        console.log(error);        
+      }
+    });
   }
 
   /**

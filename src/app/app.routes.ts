@@ -53,6 +53,9 @@ import {
 import {
   CadastrePlotOwnerListComponent
 } from "./components/repositories/cadastre/owners-X-plots/cadastre-plot-owner-list/cadastre-plot-owner-list.component";
+import {
+  UsersCreatedByUserComponent
+} from "./components/repositories/users/users/users-created-by-user/users-created-by-user.component";
 
 export const routes: Routes = [
   //{ path: 'login', component: LoginComponent },
@@ -74,8 +77,10 @@ export const routes: Routes = [
   { path: 'user/form', component: UserUserFormComponent, /* canActivate: [authGuard] */ },
   { path: 'user/form/:id', component: UserUserFormComponent, /* canActivate: [authGuard] */ },
   { path: 'user/detail/:id', component: UserUserDetailComponent, /* canActivate: [authGuard] */ },
+  { path: 'user/created/:id', component: UsersCreatedByUserComponent, /* canActivate: [authGuard] */ },
   { path: 'roles/list', component: UsersRolesListComponent, /* canActivate: [authGuard] */ },
   { path: 'user/tenant/form', component: UserUserTenantFormComponent, /* canActivate: [authGuard] */ },
+  { path: 'user/tenant/form/:id', component: UserUserTenantFormComponent, /* canActivate: [authGuard] */ },
   { path: 'roles/form', component: UsersRolesFormComponent, /* canActivate: [authGuard] */},
   { path: 'roles/form/:roleId', component: UsersRolesFormComponent, /* canActivate: [authGuard] */},
   { path: 'roles/detail/:roleId', component: UsersRolesDetailComponent, /* canActivate: [authGuard] */},

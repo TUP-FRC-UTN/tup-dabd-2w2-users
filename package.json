@@ -24,7 +24,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
-    "ngx-dabd-grupo01": "^3.2.0",
+    "ngx-dabd-grupo01": "^4.6.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",
