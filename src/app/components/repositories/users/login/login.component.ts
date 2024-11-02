@@ -73,4 +73,10 @@ export class LoginComponent implements OnInit {
         });
     }
   }
+
+  signInWithGoogle() {
+    
+  }
+
+
 }
