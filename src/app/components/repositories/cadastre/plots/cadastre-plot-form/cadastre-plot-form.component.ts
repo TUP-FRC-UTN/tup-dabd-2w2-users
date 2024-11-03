@@ -6,6 +6,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {PlotService} from "../../../../../services/plot.service";
 import {PlotStatusDictionary, PlotTypeDictionary} from "../../../../../models/plot";
 import {plotValidator} from "../../../../../validators/cadastre-plot-validators";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InfoComponent } from '../../../../common/info/info.component';
 
 @Component({
   selector: 'app-cadastre-plot-form',
@@ -21,6 +23,7 @@ export class CadastrePlotFormComponent {
   private activatedRoute = inject(ActivatedRoute)
   private router = inject(Router)
   private toastService = inject(ToastService)
+  private modalService = inject(NgbModal)
   //#endregion
 
   //#region ATT
@@ -159,4 +162,53 @@ export class CadastrePlotFormComponent {
     this.router.navigate(["/plot/list"])
   }
   //#endregion
+
+  openInfo(){
+    const modalRef = this.modalService.open(InfoComponent, {
+      size: 'lg',
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      scrollable: true
+    });   
+
+    modalRef.componentInstance.title = 'Registrar un lote';
+    modalRef.componentInstance.description = 'En esta pantalla se permite cargar los datos correspondientes para registrar un lote.';
+    modalRef.componentInstance.body = [
+      { 
+        title: 'Datos', 
+        content: [
+          {
+            strong: 'Número de Manzana:',
+            detail: 'Campo para ingresar el número de manzana del lote.'
+          },
+          {
+            strong: 'Número de Lote:',
+            detail: 'Campo para ingresar el número del lote.'
+          },
+          {
+            strong: 'Área Total:',
+            detail: 'Campo para ingresar la superficie total del lote.'
+          },
+          {
+            strong: 'Área Construida:',
+            detail: 'Campo para ingresar la superficie construida dentro del lote.'
+          },
+          {
+            strong: 'Tipo de Lote:',
+            detail: 'Desplegable para seleccionar el tipo de lote (Comercial, Privado, Comunal).'
+          },
+          {
+            strong: 'Estado del Lote:',
+            detail: 'Desplegable para seleccionar el estado actual del lote (Creado, En Venta, Vendido, En construcción, etc.).'
+          }
+        ]
+      }
+    ];
+    modalRef.componentInstance.notes = [
+      'La interfaz está diseñada para ofrecer una gestión eficiente y segura de la información de los lotes, manteniendo la integridad y precisión de los datos.',
+      'Campos obligatorios: Número de Manzana, Número de Lote, Área Total, Área Construida, Tipo de Lote, Estado del Lote.'
+    ];
+    
+  }
 }

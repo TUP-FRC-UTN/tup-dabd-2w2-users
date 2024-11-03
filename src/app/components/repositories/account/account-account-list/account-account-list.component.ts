@@ -5,6 +5,8 @@ import {MainContainerComponent} from 'ngx-dabd-grupo01';
 import {AccountService} from "../../../../services/account.service";
 import {PlotService} from "../../../../services/plot.service";
 import {Account} from "../../../../models/account";
+import { InfoComponent } from '../../../common/info/info.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-account-account-list',
@@ -17,6 +19,7 @@ export class AccountAccountListComponent {
   private accountService = inject(AccountService);
   private plotService = inject(PlotService)
   private router = inject(Router)
+  private modalService = inject(NgbModal)
 
   currentPage: number = 0
   pageSize: number = 10
@@ -45,5 +48,38 @@ export class AccountAccountListComponent {
 
   viewConcept(accountId : number) {
     this.router.navigate(["/account/concept/" + accountId])
+  }
+
+  openInfo(){
+    const modalRef = this.modalService.open(InfoComponent, {
+      size: 'lg',
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      scrollable: true
+    });  
+    
+    modalRef.componentInstance.title = 'Lista de Cuentas';
+    modalRef.componentInstance.description = 'Esta pantalla permite la visualización de los balances de las cuentas corrientes de los lotes. Los balances positivos representan el saldo a favor que tiene el lote, y los balences negativos representan las deudas de los mismos. Por cada registro de la tabla se pueden realizar distintas acciones.';
+    modalRef.componentInstance.body = [
+      { 
+        title: 'Acciones', 
+        content: [
+          {
+            strong: 'Detalle:',
+            detail: 'Redirige hacia el listado para ver detallados los gastos del lote.'
+          },
+          {
+            strong: 'Ver lote:',
+            detail: 'Redirige hacia la página para ver los datos del lotes de manera detallada'
+          }
+        ]
+      }
+    ];
+    modalRef.componentInstance.notes = [
+      'La interfaz está diseñada para ofrecer una administración eficiente de los gastos, manteniendo la integridad y precisión de los datos financieros.'
+    ];
+
+    
   }
 }

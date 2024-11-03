@@ -9,6 +9,7 @@ import {FileService} from "../../../../../services/file.service";
 import {FileStatusDictionary, FileTypeDictionary} from "../../../../../models/file";
 import {Owner} from "../../../../../models/owner";
 import {OwnerService} from "../../../../../services/owner.service";
+import { InfoComponent } from '../../../../common/info/info.component';
 
 
 @Component({
@@ -189,5 +190,16 @@ export class OwnerFilesViewComponent {
   applyFilter(type: string){}
   clearFilters(){}
   confirmFilter(){}
+
+  openInfo(){
+    const modalRef = this.modalService.open(InfoComponent, {
+      size: 'lg',
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      scrollable: true
+    });   
+    
+  }
 
 }

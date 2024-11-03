@@ -19,7 +19,7 @@
 
 
 
-<app-main-container title="Vista de Archivos de Propietario">
+<app-main-container title="Vista de Archivos de Propietario" (infoButtonClick)="openInfo()">
   <h5>{{owner?.firstName}} {{owner?.lastName}}</h5>
     <div class="card-body">
       <!-- Filtros y acciones -->

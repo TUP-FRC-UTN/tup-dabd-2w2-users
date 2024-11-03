@@ -1,4 +1,4 @@
-<app-main-container title="Lista de Roles">
+<app-main-container title="Lista de Roles" (infoButtonClick)="openInfo()">
 
 
   <div class="d-flex justify-content-between align-items-center mb-3">
@@ -16,7 +16,7 @@
             (input)="onFilterTextBoxChanged($event)"
             placeholder="Buscar..."
           />
-          <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <!-- <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-funnel-fill"></i>
           </button>
           <ul class="dropdown-menu p-3">
@@ -25,7 +25,7 @@
             <li><a class="dropdown-item ms-n2" >Estado de Lote</a></li>
             <li><select name="" id="" class="form-control"></select></li>
             <li><a class="dropdown-item ms-n2" >Tipo de Lote</a></li>
-            <li><select name="" id="" class="form-control mb-3"></select></li> <!-- Espacio añadido -->
+            <li><select name="" id="" class="form-control mb-3"></select></li> Espacio añadido
             <li>
               <button type="button" class="btn btn-outline-danger me-2" >
                 <i class="bi bi-trash-fill"></i>
@@ -34,7 +34,7 @@
                 <i class="bi bi-search"></i>
               </button>
             </li>
-          </ul>
+          </ul> -->
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
     <!-- Botones de Activo, Inactivo, Todo y "+" en el mismo grupo -->
     <div class="d-flex align-items-center">
       <!-- Botón "+" -->
-      <button type="button" class="btn btn-outline-primary" (click)="redirectToForm()">+</button>
+      <!-- <button type="button" class="btn btn-outline-primary" (click)="redirectToForm()">+</button> -->
 
       <!-- Línea vertical y botones de exportación -->
       <div class="vertical-line mx-3"></div>
@@ -107,7 +107,7 @@
                     @if (role.active == false) {
                       <li><a class="dropdown-item btn btn-danger" (click)="reactivatePlot(role.id)">Reactivar</a></li>
                     } @else {
-                      <li><a class="dropdown-item btn btn-info" (click)="updateRole(role.id)">Editar</a></li>
+                      <!-- <li><a class="dropdown-item btn btn-info" (click)="updateRole(role.id)">Editar</a></li> -->
                       <li><a class="dropdown-item btn btn-danger" (click)="assignPlotToDelete(role)" data-bs-target="#exampleModal" data-bs-toggle="modal">Eliminar</a></li>
                     }
                     <li><a class="dropdown-item btn btn-info" (click)="detailRole(role.id)" >Detalle</a></li>
